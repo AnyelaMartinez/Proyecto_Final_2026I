@@ -5,7 +5,9 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    vector2d.cpp \
     ventanaprincipal.cpp
 
 HEADERS += \
+    vector2d.h \
     ventanaprincipal.h
