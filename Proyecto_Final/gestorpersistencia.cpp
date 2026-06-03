@@ -1,0 +1,56 @@
+#include "gestorpersistencia.h"
+
+#include "juego.h"
+
+#include <QDataStream>
+#include <QFile>
+
+GestorPersistencia::GestorPersistencia()
+{
+}
+
+GestorPersistencia &GestorPersistencia::instancia()
+{
+    static GestorPersistencia gestor;
+    return gestor;
+}
+
+bool GestorPersistencia::guardar(const QString &archivo, const Juego &juego) const
+{
+    QFile file(archivo);
+    if (!file.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_5_12);
+    out << juego.getNivelActual()
+        << juego.getPuntuacionJugador()
+        << juego.getPuntuacionOponente()
+        << juego.getLanzamientosRestantes();
+    return true;
+}
+
+bool GestorPersistencia::cargar(const QString &archivo, Juego &juego) const
+{
+    QFile file(archivo);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_5_12);
+
+    int nivel = 1;
+    int jugador = 0;
+    int oponente = 0;
+    int lanzamientos = 3;
+    in >> nivel >> jugador >> oponente >> lanzamientos;
+
+    if (in.status() != QDataStream::Ok) {
+        return false;
+    }
+
+    juego.setEstado(nivel, jugador, oponente, lanzamientos);
+    return true;
+}
