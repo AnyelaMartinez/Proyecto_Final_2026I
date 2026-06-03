@@ -1,57 +1,78 @@
 #include "chillywilly.h"
 
-ChillyWilly::ChillyWilly() : Personaje()
-{
-    velocidad = 3.0f;
-    agilidad = 1.5f;
-    barriendoActivo = false;
-    bonusVelocidad = 1.0f;
-    duracionBonus = 0.0f;
-    inestabilidad = 0.2f;
-}
+#include "piedracurling.h"
 
-ChillyWilly::~ChillyWilly()
-{
-}
+#include <QBrush>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsPolygonItem>
+#include <QGraphicsSimpleTextItem>
+#include <QPen>
+#include <QPixmap>
+#include <QRadialGradient>
 
-void ChillyWilly::actualizar(float dt)
+ChillyWilly::ChillyWilly(int xInicial, int yInicial)
+    : Personaje(xInicial, yInicial, "chilly"), barriendo(false), bonusActivo(false), tiempoBonus(0.0f)
 {
-    if (duracionBonus > 0)
-    {
-        duracionBonus = duracionBonus - dt;
-        if (duracionBonus <= 0)
-        {
-            bonusVelocidad = 1.0f;
-            duracionBonus = 0;
-        }
-    }
-}
-
-void ChillyWilly::mover(int dx, int dy)
-{
-    Vector2D nueva = pos;
-    nueva.x = nueva.x + dx * velocidad * bonusVelocidad;
-    nueva.y = nueva.y + dy * velocidad * bonusVelocidad;
-    setPosicion(nueva);
+    velocidad = 150.0f;
+    agilidad = 1.2f;
 }
 
 void ChillyWilly::barrer()
 {
-    barriendoActivo = true;
+    barriendo = true;
 }
 
-void ChillyWilly::detenerBarrido()
+void ChillyWilly::dejarDeBarrer()
 {
-    barriendoActivo = false;
+    barriendo = false;
 }
 
-bool ChillyWilly::estaBarriendo()
+void ChillyWilly::lanzar(PiedraCurling &piedra, float fuerza, float angulo)
 {
-    return barriendoActivo;
+    piedra.aplicarFuerza(bonusActivo ? fuerza * 1.15f : fuerza, angulo);
 }
 
-void ChillyWilly::activarBonus(float seg)
+void ChillyWilly::recogerPescado()
 {
-    bonusVelocidad = 1.5f;
-    duracionBonus = seg;
+    bonusActivo = true;
+    tiempoBonus = 8.0f;
+}
+
+void ChillyWilly::actualizar(float dt)
+{
+    if (bonusActivo) {
+        tiempoBonus -= dt;
+        if (tiempoBonus <= 0.0f) {
+            bonusActivo = false;
+            tiempoBonus = 0.0f;
+        }
+    }
+    ObjetoBase::actualizar(dt);
+}
+
+void ChillyWilly::dibujar(QGraphicsScene *scene)
+{
+    if (!scene || grafico) {
+        return;
+    }
+
+    QGraphicsPixmapItem *cuerpo = scene->addPixmap(QPixmap(":/sprites/chilly.png"));
+    cuerpo->setOffset(-48, -48);
+    QGraphicsSimpleTextItem *nombre = scene->addSimpleText("Chilly");
+    nombre->setParentItem(cuerpo);
+    nombre->setPos(-24, 32);
+    grafico = cuerpo;
+    grafico->setZValue(6);
+    grafico->setPos(x, y);
+}
+
+bool ChillyWilly::estaBarriendo() const
+{
+    return barriendo;
+}
+
+bool ChillyWilly::tieneBonus() const
+{
+    return bonusActivo;
 }
