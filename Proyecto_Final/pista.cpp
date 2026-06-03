@@ -3,23 +3,35 @@
 #include "piedracurling.h"
 
 #include <QBrush>
+#include <QFont>
 #include <QGraphicsSimpleTextItem>
+#include <QLinearGradient>
 #include <QPen>
 
 Pista::Pista(int anchoInicial, int altoInicial)
     : ancho(anchoInicial), alto(altoInicial)
 {
+    // Fondo: hielo normal cubriendo toda la pista
     agregarZona(std::make_unique<HieloNormal>(Vector2D(0, 0), ancho, alto));
-    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(190, 0), 190, alto));
-    agregarZona(std::make_unique<ZonaMagica>(Vector2D(395, 0), 95, alto));
-    agregarZona(std::make_unique<NieveEspesa>(Vector2D(510, 0), 95, alto));
+
+    // Manchones de hielo resbaladizo
+    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(170, 90), 110, 70));
+    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(380, 330), 100, 60));
+
+    // Manchones de nieve espesa
+    agregarZona(std::make_unique<NieveEspesa>(Vector2D(290, 200), 90, 70));
+    agregarZona(std::make_unique<NieveEspesa>(Vector2D(450, 90), 80, 80));
+
+    // Manchon magico
+    agregarZona(std::make_unique<ZonaMagica>(Vector2D(180, 290), 100, 100));
 }
 
 Zona *Pista::zonaEn(float px, float py) const
 {
-    for (const auto &zona : zonas) {
-        if (zona->contiene(px, py)) {
-            return zona.get();
+    // Recorre al reves para que los manchones tengan prioridad sobre el fondo
+    for (auto it = zonas.rbegin(); it != zonas.rend(); ++it) {
+        if ((*it)->contiene(px, py)) {
+            return it->get();
         }
     }
     return nullptr;
@@ -40,19 +52,32 @@ void Pista::aplicarZona(PiedraCurling &piedra) const
 
 void Pista::dibujar(QGraphicsScene *scene) const
 {
-    scene->setBackgroundBrush(QBrush(QColor(210, 235, 245)));
+    // Fondo con gradiente suave azul-blanco
+    QLinearGradient fondo(0, 0, 0, alto);
+    fondo.setColorAt(0.0, QColor(180, 215, 240));
+    fondo.setColorAt(1.0, QColor(230, 245, 255));
+    scene->setBackgroundBrush(QBrush(fondo));
+
+    // Dibuja todas las zonas (fondo primero, manchones encima)
     for (const auto &zona : zonas) {
         zona->dibujar(scene);
     }
-    for (int i = 0; i < alto; i += 34) {
-        scene->addLine(0, i, ancho, i, QPen(QColor(255, 255, 255, 55), 1));
-    }
-    scene->addRect(0, 0, ancho, alto, QPen(Qt::darkBlue, 4), Qt::NoBrush);
-    scene->addLine(85, 0, 85, alto, QPen(Qt::darkGray, 2, Qt::DashLine));
-    QGraphicsSimpleTextItem *inicio = scene->addSimpleText("Zona de lanzamiento");
-    inicio->setPos(18, 18);
-    QGraphicsSimpleTextItem *meta = scene->addSimpleText("Casa objetivo");
-    meta->setPos(595, 455);
+
+    // Linea de lanzamiento
+    scene->addLine(85, 0, 85, alto, QPen(QColor(70, 100, 160, 180), 2, Qt::DashLine));
+
+    // Borde de la pista
+    scene->addRect(0, 0, ancho, alto, QPen(QColor(50, 80, 130), 4), Qt::NoBrush);
+
+    // Etiquetas
+    QFont fontEtiqueta("Arial", 10, QFont::Bold);
+    QGraphicsSimpleTextItem *inicio = scene->addSimpleText("LANZAMIENTO", fontEtiqueta);
+    inicio->setBrush(QBrush(QColor(40, 60, 100)));
+    inicio->setPos(12, 12);
+
+    QGraphicsSimpleTextItem *meta = scene->addSimpleText("CASA", fontEtiqueta);
+    meta->setBrush(QBrush(QColor(160, 30, 30)));
+    meta->setPos(622, 12);
 }
 
 int Pista::getAncho() const

@@ -30,8 +30,6 @@ protected:
 
 private slots:
     void actualizarJuego();
-    void lanzarPiedra();
-    void barrer();
     void cambiarNivel();
     void reiniciarJuego();
     void guardarJuego();

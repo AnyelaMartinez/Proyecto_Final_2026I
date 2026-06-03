@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
+    <width>1000</width>
     <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mundo de Chilly Willy - Fuerza y Angulo</string>
+   <string>Mundo de Chilly Willy</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -36,7 +36,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Controles</string>
+         <string>Mundo de Chilly Willy</string>
         </property>
        </widget>
       </item>
@@ -62,62 +62,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labelFuerza">
+       <widget class="QLabel" name="labelControles">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
         <property name="text">
-         <string>Fuerza: 260</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="sliderFuerza">
-        <property name="minimum">
-         <number>80</number>
-        </property>
-        <property name="maximum">
-         <number>430</number>
-        </property>
-        <property name="value">
-         <number>260</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelAngulo">
-        <property name="text">
-         <string>Angulo: 0</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="sliderAngulo">
-        <property name="minimum">
-         <number>-35</number>
-        </property>
-        <property name="maximum">
-         <number>35</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="botonLanzar">
-        <property name="text">
-         <string>Lanzar piedra</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="botonBarrer">
-        <property name="text">
-         <string>Barrer / Espacio</string>
+         <string>Controles:
+- Flechas izq/der: girar angulo
+- Espacio: lanzar (Nivel 1) / barrer (Nivel 2)</string>
         </property>
        </widget>
       </item>
@@ -164,7 +121,7 @@
        <widget class="QLabel" name="labelEstado">
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>220</width>
           <height>80</height>
          </size>
         </property>
@@ -198,7 +155,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1080</width>
+     <width>1000</width>
      <height>22</height>
     </rect>
    </property>

@@ -1,7 +1,11 @@
 #include "juego.h"
 
+#include <QBrush>
+#include <QFont>
 #include <QGraphicsScene>
+#include <QPen>
 #include <Qt>
+#include <QtMath>
 
 Juego::Juego()
     : scene(nullptr),
@@ -15,10 +19,20 @@ Juego::Juego()
     mensajeEstado("Listo para lanzar"),
     piedra(90, 255),
     piedraIA(90, 210),
-    chilly(80, 360),
+    chilly(50, 280),
     smedley(430, 120),
     pescado(350, 360),
-    nivelActivo(&nivel1)
+    nivelActivo(&nivel1),
+    medidorFuerza(200.0f),
+    medidorDir(1),
+    espacioAnterior(false),
+    medidorFondo(nullptr),
+    medidorRelleno(nullptr),
+    medidorLabel(nullptr),
+    anguloLanzamiento(0.0f),
+    flechaLinea(nullptr),
+    flechaIzq(nullptr),
+    flechaDer(nullptr)
 {
 }
 
@@ -34,22 +48,42 @@ void Juego::iniciar(QGraphicsScene *nuevaScene)
 
 void Juego::ejecutar(float dt)
 {
-    if (entrada.flechaArriba()) {
-        moverChilly(0, -4);
-    }
-    if (entrada.flechaAbajo()) {
-        moverChilly(0, 4);
-    }
-    if (entrada.flechaIzquierda()) {
-        moverChilly(-4, 0);
-    }
-    if (entrada.flechaDerecha()) {
-        moverChilly(4, 0);
-    }
-    if (entrada.espacio()) {
-        barrer();
-    } else {
+    if (nivelActual == 1) {
+        // Nivel 1: medidor de fuerza oscila, Espacio lanza, flechas giran el angulo
+        actualizarMedidor(dt);
+        if (entrada.flechaIzquierda()) {
+            anguloLanzamiento += 60.0f * dt;
+        }
+        if (entrada.flechaDerecha()) {
+            anguloLanzamiento -= 60.0f * dt;
+        }
+        anguloLanzamiento = qBound(-45.0f, anguloLanzamiento, 45.0f);
+        actualizarFlechaAngulo();
+        bool espacioActual = entrada.espacio();
+        if (espacioActual && !espacioAnterior) {
+            lanzarJugador(medidorFuerza, anguloLanzamiento);
+        }
+        espacioAnterior = espacioActual;
         chilly.dejarDeBarrer();
+    } else {
+        // Nivel 2: flechas mueven a Chilly, Espacio barre
+        if (entrada.flechaArriba()) {
+            moverChilly(0, -4);
+        }
+        if (entrada.flechaAbajo()) {
+            moverChilly(0, 4);
+        }
+        if (entrada.flechaIzquierda()) {
+            moverChilly(-4, 0);
+        }
+        if (entrada.flechaDerecha()) {
+            moverChilly(4, 0);
+        }
+        if (entrada.espacio()) {
+            barrer();
+        } else {
+            chilly.dejarDeBarrer();
+        }
     }
 
     nivelActivo->actualizar(dt);
@@ -79,9 +113,12 @@ void Juego::cambiarNivel()
     nivelActual = nivelActual == 1 ? 2 : 1;
     if (nivelActual == 1) {
         nivelActivo = &nivel1;
+        chilly.setPosicion(50, 280);
     } else {
         nivelActivo = &nivel2;
+        chilly.setPosicion(80, 360);
     }
+    espacioAnterior = true;
     piedra.reiniciar();
     mensajeEstado = nivelActual == 1
                         ? "Nivel 1: vista superior, prepara fuerza y angulo."
@@ -167,7 +204,7 @@ void Juego::reiniciar()
     piedra.reiniciar();
     piedraIA.reiniciar(90, 210);
     piedraIA.setActivo(false);
-    chilly.setPosicion(80, 360);
+    chilly.setPosicion(50, 280);
     smedley.setPosicion(430, 120);
     pescado.reiniciar(350, 360);
     dibujarTodo();
@@ -223,6 +260,12 @@ void Juego::dibujarTodo()
     chilly.limpiarGrafico();
     smedley.limpiarGrafico();
     pescado.limpiarGrafico();
+    medidorFondo = nullptr;
+    medidorRelleno = nullptr;
+    medidorLabel = nullptr;
+    flechaLinea = nullptr;
+    flechaIzq = nullptr;
+    flechaDer = nullptr;
     nivelActivo->dibujar(scene);
     pescado.dibujar(scene);
     chilly.dibujar(scene);
@@ -230,6 +273,100 @@ void Juego::dibujarTodo()
     piedra.dibujar(scene);
     piedraIA.dibujar(scene);
     piedraIA.setActivo(iaAnimando);
+    if (nivelActual == 1) {
+        crearMedidor();
+        crearFlechaAngulo();
+    }
+}
+
+void Juego::crearMedidor()
+{
+    if (!scene) return;
+    medidorFondo = scene->addRect(180, 470, 400, 22,
+                                  QPen(QColor(50, 80, 130), 2),
+                                  QBrush(QColor(220, 230, 245, 230)));
+    medidorFondo->setZValue(20);
+
+    float pct = qBound(0.0f, (medidorFuerza - 100.0f) / 700.0f, 1.0f);
+    float w = pct * 400.0f;
+    medidorRelleno = scene->addRect(180, 470, w, 22,
+                                    QPen(Qt::NoPen),
+                                    QBrush(QColor(50, 150, 255, 220)));
+    medidorRelleno->setZValue(21);
+
+    QFont fonte("Arial", 9, QFont::Bold);
+    medidorLabel = scene->addSimpleText("FUERZA  (Espacio para lanzar)", fonte);
+    medidorLabel->setBrush(QBrush(QColor(40, 60, 100)));
+    medidorLabel->setPos(180, 450);
+    medidorLabel->setZValue(20);
+}
+
+void Juego::actualizarMedidor(float dt)
+{
+    if (!turnoJugador || esperandoResultado || lanzamientosRestantes <= 0) {
+        return;
+    }
+
+    medidorFuerza += medidorDir * 600.0f * dt;
+    if (medidorFuerza >= 800.0f) {
+        medidorFuerza = 800.0f;
+        medidorDir = -1;
+    } else if (medidorFuerza <= 100.0f) {
+        medidorFuerza = 100.0f;
+        medidorDir = 1;
+    }
+
+    if (!medidorRelleno) return;
+
+    float pct = qBound(0.0f, (medidorFuerza - 100.0f) / 700.0f, 1.0f);
+    float w = pct * 400.0f;
+    medidorRelleno->setRect(180, 470, w, 22);
+
+    int r = static_cast<int>(255 * qMin(1.0f, 2 * pct));
+    int g = static_cast<int>(255 * qMin(1.0f, 2 * (1 - pct)));
+    medidorRelleno->setBrush(QBrush(QColor(r, g, 50, 230)));
+}
+
+void Juego::crearFlechaAngulo()
+{
+    if (!scene) return;
+    QPen pen(QColor(255, 200, 0, 240), 3);
+    flechaLinea = scene->addLine(0, 0, 0, 0, pen);
+    flechaIzq = scene->addLine(0, 0, 0, 0, pen);
+    flechaDer = scene->addLine(0, 0, 0, 0, pen);
+    flechaLinea->setZValue(10);
+    flechaIzq->setZValue(10);
+    flechaDer->setZValue(10);
+    actualizarFlechaAngulo();
+}
+
+void Juego::actualizarFlechaAngulo()
+{
+    if (!flechaLinea) return;
+
+    bool visible = (turnoJugador && !esperandoResultado && piedra.detenido()
+                    && lanzamientosRestantes > 0 && !iaAnimando);
+    flechaLinea->setVisible(visible);
+    flechaIzq->setVisible(visible);
+    flechaDer->setVisible(visible);
+    if (!visible) return;
+
+    float rad = qDegreesToRadians(anguloLanzamiento);
+    float startX = piedra.getX();
+    float startY = piedra.getY();
+    float L = 75.0f;
+    float tipX = startX + L * std::cos(rad);
+    float tipY = startY - L * std::sin(rad);
+    flechaLinea->setLine(startX, startY, tipX, tipY);
+
+    float headLen = 14.0f;
+    float headRad = qDegreesToRadians(150.0f);
+    float leftX = tipX + headLen * std::cos(rad + headRad);
+    float leftY = tipY - headLen * std::sin(rad + headRad);
+    flechaIzq->setLine(tipX, tipY, leftX, leftY);
+    float rightX = tipX + headLen * std::cos(rad - headRad);
+    float rightY = tipY - headLen * std::sin(rad - headRad);
+    flechaDer->setLine(tipX, tipY, rightX, rightY);
 }
 
 void Juego::actualizarColisiones()

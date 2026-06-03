@@ -13,7 +13,10 @@
 #include "pista.h"
 #include "smedley.h"
 
+#include <QGraphicsLineItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsScene>
+#include <QGraphicsSimpleTextItem>
 #include <QString>
 
 class Juego
@@ -50,6 +53,10 @@ private:
     void procesarTurnoIA(float dt);
     void mantenerDentroDePista();
     void turnoIA();
+    void crearMedidor();
+    void actualizarMedidor(float dt);
+    void crearFlechaAngulo();
+    void actualizarFlechaAngulo();
 
     QGraphicsScene *scene;
     int nivelActual;
@@ -71,6 +78,20 @@ private:
     Nivel *nivelActivo;
     AgenteIA agenteIA;
     GestorEntrada entrada;
+
+    // Medidor de fuerza estilo golf (Nivel 1)
+    float medidorFuerza;
+    int medidorDir;
+    bool espacioAnterior;
+    QGraphicsRectItem *medidorFondo;
+    QGraphicsRectItem *medidorRelleno;
+    QGraphicsSimpleTextItem *medidorLabel;
+
+    // Flecha de angulo (Nivel 1)
+    float anguloLanzamiento;
+    QGraphicsLineItem *flechaLinea;
+    QGraphicsLineItem *flechaIzq;
+    QGraphicsLineItem *flechaDer;
 };
 
 #endif

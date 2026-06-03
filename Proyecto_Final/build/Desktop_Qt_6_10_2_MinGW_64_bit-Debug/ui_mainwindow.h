@@ -17,7 +17,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
@@ -36,12 +35,7 @@ public:
     QLabel *labelNivel;
     QLabel *labelPuntuacion;
     QLabel *labelLanzamientos;
-    QLabel *labelFuerza;
-    QSlider *sliderFuerza;
-    QLabel *labelAngulo;
-    QSlider *sliderAngulo;
-    QPushButton *botonLanzar;
-    QPushButton *botonBarrer;
+    QLabel *labelControles;
     QPushButton *botonCambiarNivel;
     QPushButton *botonReiniciar;
     QHBoxLayout *layoutGuardar;
@@ -57,7 +51,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1080, 650);
+        MainWindow->resize(1000, 650);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         horizontalLayout = new QHBoxLayout(centralwidget);
@@ -94,43 +88,14 @@ public:
 
         panelControles->addWidget(labelLanzamientos);
 
-        labelFuerza = new QLabel(centralwidget);
-        labelFuerza->setObjectName("labelFuerza");
+        labelControles = new QLabel(centralwidget);
+        labelControles->setObjectName("labelControles");
+        QFont font1;
+        font1.setPointSize(10);
+        labelControles->setFont(font1);
+        labelControles->setWordWrap(true);
 
-        panelControles->addWidget(labelFuerza);
-
-        sliderFuerza = new QSlider(centralwidget);
-        sliderFuerza->setObjectName("sliderFuerza");
-        sliderFuerza->setMinimum(80);
-        sliderFuerza->setMaximum(430);
-        sliderFuerza->setValue(260);
-        sliderFuerza->setOrientation(Qt::Horizontal);
-
-        panelControles->addWidget(sliderFuerza);
-
-        labelAngulo = new QLabel(centralwidget);
-        labelAngulo->setObjectName("labelAngulo");
-
-        panelControles->addWidget(labelAngulo);
-
-        sliderAngulo = new QSlider(centralwidget);
-        sliderAngulo->setObjectName("sliderAngulo");
-        sliderAngulo->setMinimum(-35);
-        sliderAngulo->setMaximum(35);
-        sliderAngulo->setValue(0);
-        sliderAngulo->setOrientation(Qt::Horizontal);
-
-        panelControles->addWidget(sliderAngulo);
-
-        botonLanzar = new QPushButton(centralwidget);
-        botonLanzar->setObjectName("botonLanzar");
-
-        panelControles->addWidget(botonLanzar);
-
-        botonBarrer = new QPushButton(centralwidget);
-        botonBarrer->setObjectName("botonBarrer");
-
-        panelControles->addWidget(botonBarrer);
+        panelControles->addWidget(labelControles);
 
         botonCambiarNivel = new QPushButton(centralwidget);
         botonCambiarNivel->setObjectName("botonCambiarNivel");
@@ -164,7 +129,7 @@ public:
 
         labelEstado = new QLabel(centralwidget);
         labelEstado->setObjectName("labelEstado");
-        labelEstado->setMinimumSize(QSize(250, 80));
+        labelEstado->setMinimumSize(QSize(220, 80));
         labelEstado->setWordWrap(true);
 
         panelControles->addWidget(labelEstado);
@@ -179,7 +144,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1080, 22));
+        menubar->setGeometry(QRect(0, 0, 1000, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -192,15 +157,14 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Mundo de Chilly Willy - Fuerza y Angulo", nullptr));
-        labelTitulo->setText(QCoreApplication::translate("MainWindow", "Controles", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Mundo de Chilly Willy", nullptr));
+        labelTitulo->setText(QCoreApplication::translate("MainWindow", "Mundo de Chilly Willy", nullptr));
         labelNivel->setText(QCoreApplication::translate("MainWindow", "Nivel: 1", nullptr));
         labelPuntuacion->setText(QCoreApplication::translate("MainWindow", "Jugador: 0 | IA: 0", nullptr));
         labelLanzamientos->setText(QCoreApplication::translate("MainWindow", "Lanzamientos: 3", nullptr));
-        labelFuerza->setText(QCoreApplication::translate("MainWindow", "Fuerza: 260", nullptr));
-        labelAngulo->setText(QCoreApplication::translate("MainWindow", "Angulo: 0", nullptr));
-        botonLanzar->setText(QCoreApplication::translate("MainWindow", "Lanzar piedra", nullptr));
-        botonBarrer->setText(QCoreApplication::translate("MainWindow", "Barrer / Espacio", nullptr));
+        labelControles->setText(QCoreApplication::translate("MainWindow", "Controles:\n"
+"- Flechas izq/der: girar angulo\n"
+"- Espacio: lanzar (Nivel 1) / barrer (Nivel 2)", nullptr));
         botonCambiarNivel->setText(QCoreApplication::translate("MainWindow", "Cambiar nivel", nullptr));
         botonReiniciar->setText(QCoreApplication::translate("MainWindow", "Reiniciar", nullptr));
         botonGuardar->setText(QCoreApplication::translate("MainWindow", "Guardar", nullptr));
