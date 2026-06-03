@@ -17,7 +17,6 @@ public:
     void dibujar(QGraphicsScene *scene) override;
 
 private:
-    int patron;
     float velocidadPatrulla;
     int direccion;
     FisicaColisionElastica colision;

@@ -7,7 +7,10 @@ Personaje::Personaje(int xInicial, int yInicial, const QString &spriteInicial)
 
 void Personaje::mover(int dx, int dy)
 {
-    setPosicion(x + dx, y + dy);
+    float factor = (velocidad / 100.0f) * agilidad;
+    int nuevoX = x + static_cast<int>(dx * factor);
+    int nuevoY = y + static_cast<int>(dy * factor);
+    setPosicion(nuevoX, nuevoY);
 }
 
 float Personaje::getVelocidad() const

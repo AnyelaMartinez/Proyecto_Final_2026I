@@ -274,7 +274,7 @@ void Juego::procesarTurnoIA(float dt)
     if (piedraIA.detenido()) {
         Casa &c = nivel1.getCasa();
         const int puntosIA = c.calcularPuntos(piedraIA);
-        agenteIA.registrarResultado(300.0f, 0.0f, piedraIA.distanciaA(c));
+        agenteIA.registrarResultado(piedraIA.distanciaA(c));
         puntuacionOponente += puntosIA;
         agenteIA.ajustarDificultad(puntosIA == 0);
         piedraIA.setActivo(false);

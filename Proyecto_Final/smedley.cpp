@@ -12,10 +12,9 @@
 
 Smedley::Smedley(int xInicial, int yInicial)
     : Personaje(xInicial, yInicial, "smedley"),
-      patron(1),
-      velocidadPatrulla(95.0f),
-      direccion(1),
-      colision(0.80f)
+    velocidadPatrulla(95.0f),
+    direccion(1),
+    colision(0.80f)
 {
 }
 

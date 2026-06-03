@@ -38,7 +38,7 @@ public:
     Decision razonar(const Percepcion &percepcion);
     void actuar(PiedraCurling &piedra, const Casa &casa);
     void ajustarDificultad(bool fallo);
-    void registrarResultado(float fuerza, float angulo, float distanciaFinal);
+    void registrarResultado(float distanciaFinal);
     void calcularCorreccion();
 
 private:
@@ -46,6 +46,7 @@ private:
     int nivelDificultad;
     float sesgoAngulo;
     float sesgoFuerza;
+    Decision ultimaDecision;
     QVector<Lanzamiento> historial;
 };
 
