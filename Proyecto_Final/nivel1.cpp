@@ -60,3 +60,8 @@ int Nivel1::getLanzamientosRestantes() const
 {
     return lanzamientosRestantes;
 }
+
+Casa &Nivel1::getCasa()
+{
+    return casa;
+}

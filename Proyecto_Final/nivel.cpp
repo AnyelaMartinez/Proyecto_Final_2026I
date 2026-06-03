@@ -12,3 +12,8 @@ Nivel::~Nivel()
 void Nivel::procesarBarrido()
 {
 }
+
+Pista &Nivel::getPista()
+{
+    return pista;
+}

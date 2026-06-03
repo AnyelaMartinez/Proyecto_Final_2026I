@@ -61,8 +61,6 @@ private:
     bool turnoJugador;
     QString mensajeEstado;
 
-    Pista pista;
-    Casa casa;
     PiedraCurling piedra;
     PiedraCurling piedraIA;
     ChillyWilly chilly;

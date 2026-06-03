@@ -13,8 +13,6 @@ Juego::Juego()
     iaAnimando(false),
     turnoJugador(true),
     mensajeEstado("Listo para lanzar"),
-    pista(760, 510),
-    casa(Vector2D(650, 255), 80),
     piedra(90, 255),
     piedraIA(90, 210),
     chilly(80, 360),
@@ -28,7 +26,8 @@ void Juego::iniciar(QGraphicsScene *nuevaScene)
 {
     scene = nuevaScene;
     if (scene) {
-        scene->setSceneRect(0, 0, pista.getAncho(), pista.getAlto());
+        Pista &p = nivelActivo->getPista();
+        scene->setSceneRect(0, 0, p.getAncho(), p.getAlto());
     }
     dibujarTodo();
 }
@@ -59,7 +58,7 @@ void Juego::ejecutar(float dt)
         procesarTurnoIA(dt);
     }
 
-    pista.aplicarZona(piedra);
+    nivelActivo->getPista().aplicarZona(piedra);
     if (chilly.estaBarriendo()) {
         piedra.setFriccion(0.18f);
         nivelActivo->procesarBarrido();
@@ -138,8 +137,9 @@ void Juego::moverChilly(int dx, int dy)
     chilly.mover(dx, dy);
     int nuevoX = chilly.getX();
     int nuevoY = chilly.getY();
-    nuevoX = qMax(25, qMin(pista.getAncho() - 25, nuevoX));
-    nuevoY = qMax(35, qMin(pista.getAlto() - 35, nuevoY));
+    Pista &p = nivelActivo->getPista();
+    nuevoX = qMax(25, qMin(p.getAncho() - 25, nuevoX));
+    nuevoY = qMax(35, qMin(p.getAlto() - 35, nuevoY));
     chilly.setPosicion(nuevoX, nuevoY);
 }
 
@@ -224,9 +224,6 @@ void Juego::dibujarTodo()
     smedley.limpiarGrafico();
     pescado.limpiarGrafico();
     nivelActivo->dibujar(scene);
-    if (nivelActual == 2) {
-        casa.dibujar(scene);
-    }
     pescado.dibujar(scene);
     chilly.dibujar(scene);
     smedley.dibujar(scene);
@@ -248,7 +245,7 @@ void Juego::actualizarColisiones()
 void Juego::procesarFinDeLanzamiento()
 {
     if (esperandoResultado && piedra.detenido()) {
-        const int puntos = casa.calcularPuntos(piedra);
+        const int puntos = nivel1.getCasa().calcularPuntos(piedra);
         puntuacionJugador += puntos;
         esperandoResultado = false;
         turnoJugador = false;
@@ -259,11 +256,12 @@ void Juego::procesarFinDeLanzamiento()
 
 void Juego::procesarTurnoIA(float dt)
 {
-    pista.aplicarZona(piedraIA);
+    Pista &p = nivelActivo->getPista();
+    p.aplicarZona(piedraIA);
     piedraIA.actualizar(dt);
 
-    if (piedraIA.getX() < 10 || piedraIA.getX() > pista.getAncho() - 10
-        || piedraIA.getY() < 10 || piedraIA.getY() > pista.getAlto() - 10) {
+    if (piedraIA.getX() < 10 || piedraIA.getX() > p.getAncho() - 10
+        || piedraIA.getY() < 10 || piedraIA.getY() > p.getAlto() - 10) {
         piedraIA.reiniciar(90, 210);
         piedraIA.setActivo(false);
         iaAnimando = false;
@@ -274,8 +272,9 @@ void Juego::procesarTurnoIA(float dt)
     }
 
     if (piedraIA.detenido()) {
-        const int puntosIA = casa.calcularPuntos(piedraIA);
-        agenteIA.registrarResultado(300.0f, 0.0f, piedraIA.distanciaA(casa));
+        Casa &c = nivel1.getCasa();
+        const int puntosIA = c.calcularPuntos(piedraIA);
+        agenteIA.registrarResultado(300.0f, 0.0f, piedraIA.distanciaA(c));
         puntuacionOponente += puntosIA;
         agenteIA.ajustarDificultad(puntosIA == 0);
         piedraIA.setActivo(false);
@@ -288,8 +287,9 @@ void Juego::procesarTurnoIA(float dt)
 
 void Juego::mantenerDentroDePista()
 {
-    if (piedra.getX() < 10 || piedra.getX() > pista.getAncho() - 10
-        || piedra.getY() < 10 || piedra.getY() > pista.getAlto() - 10) {
+    Pista &p = nivelActivo->getPista();
+    if (piedra.getX() < 10 || piedra.getX() > p.getAncho() - 10
+        || piedra.getY() < 10 || piedra.getY() > p.getAlto() - 10) {
         piedra.reiniciar();
         esperandoResultado = false;
         mensajeEstado = "La piedra salio de la pista.";
@@ -302,6 +302,6 @@ void Juego::turnoIA()
     agenteIA.analizar();
     piedraIA.reiniciar(90, 210);
     piedraIA.setActivo(true);
-    agenteIA.actuar(piedraIA, casa);
+    agenteIA.actuar(piedraIA, nivel1.getCasa());
     iaAnimando = true;
 }

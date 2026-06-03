@@ -16,6 +16,8 @@ public:
     virtual bool terminado() const = 0;
     virtual void procesarBarrido();
 
+    Pista &getPista();
+
 protected:
     Pista pista;
     float tiempoTranscurrido;

@@ -23,6 +23,7 @@ public:
     void cambiarTurno();
     Personaje *turnoActual();
     int getLanzamientosRestantes() const;
+    Casa &getCasa();
 
 private:
     int lanzamientosRestantes;
