@@ -1,0 +1,25 @@
+# Archivos de Qt Creator
+*.user
+*.user.*
+*.autosave
+.qtcreator/
+
+# Carpetas de compilacion
+build/
+build-*/
+debug/
+release/
+
+# Archivos generados
+Makefile*
+*.o
+*.obj
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+.qmake.stash
+
+# OS
+Thumbs.db
+.DS_Store
