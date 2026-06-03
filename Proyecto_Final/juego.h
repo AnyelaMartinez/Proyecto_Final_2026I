@@ -70,6 +70,7 @@ private:
     PescadoDorado pescado;
     Nivel1 nivel1;
     Nivel2 nivel2;
+    Nivel *nivelActivo;
     AgenteIA agenteIA;
     GestorEntrada entrada;
 };

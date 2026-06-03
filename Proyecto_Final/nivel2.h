@@ -14,7 +14,7 @@ public:
     void procesarTecla(int tecla) override;
     bool terminado() const override;
 
-    void procesarBarrido();
+    void procesarBarrido() override;
     bool verificarLlegada(int xPiedra) const;
     bool verificarTiempo() const;
     float getTiempoRestante() const;

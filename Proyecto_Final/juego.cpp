@@ -5,21 +5,22 @@
 
 Juego::Juego()
     : scene(nullptr),
-      nivelActual(1),
-      puntuacionJugador(0),
-      puntuacionOponente(0),
-      lanzamientosRestantes(3),
-      esperandoResultado(false),
-      iaAnimando(false),
-      turnoJugador(true),
-      mensajeEstado("Listo para lanzar"),
-      pista(760, 510),
-      casa(Vector2D(650, 255), 80),
-      piedra(90, 255),
-      piedraIA(90, 210),
-      chilly(80, 360),
-      smedley(430, 120),
-      pescado(350, 360)
+    nivelActual(1),
+    puntuacionJugador(0),
+    puntuacionOponente(0),
+    lanzamientosRestantes(3),
+    esperandoResultado(false),
+    iaAnimando(false),
+    turnoJugador(true),
+    mensajeEstado("Listo para lanzar"),
+    pista(760, 510),
+    casa(Vector2D(650, 255), 80),
+    piedra(90, 255),
+    piedraIA(90, 210),
+    chilly(80, 360),
+    smedley(430, 120),
+    pescado(350, 360),
+    nivelActivo(&nivel1)
 {
 }
 
@@ -52,9 +53,7 @@ void Juego::ejecutar(float dt)
         chilly.dejarDeBarrer();
     }
 
-    if (nivelActual == 2) {
-        nivel2.actualizar(dt);
-    }
+    nivelActivo->actualizar(dt);
 
     if (iaAnimando) {
         procesarTurnoIA(dt);
@@ -63,9 +62,7 @@ void Juego::ejecutar(float dt)
     pista.aplicarZona(piedra);
     if (chilly.estaBarriendo()) {
         piedra.setFriccion(0.18f);
-        if (nivelActual == 2) {
-            nivel2.procesarBarrido();
-        }
+        nivelActivo->procesarBarrido();
     }
 
     piedra.actualizar(dt);
@@ -81,10 +78,15 @@ void Juego::ejecutar(float dt)
 void Juego::cambiarNivel()
 {
     nivelActual = nivelActual == 1 ? 2 : 1;
+    if (nivelActual == 1) {
+        nivelActivo = &nivel1;
+    } else {
+        nivelActivo = &nivel2;
+    }
     piedra.reiniciar();
     mensajeEstado = nivelActual == 1
-        ? "Nivel 1: vista superior, prepara fuerza y angulo."
-        : "Nivel 2: vista lateral, usa barrido con espacio.";
+                        ? "Nivel 1: vista superior, prepara fuerza y angulo."
+                        : "Nivel 2: vista lateral, usa barrido con espacio.";
     dibujarTodo();
 }
 
@@ -154,6 +156,7 @@ void Juego::soltarTecla(int tecla)
 void Juego::reiniciar()
 {
     nivelActual = 1;
+    nivelActivo = &nivel1;
     puntuacionJugador = 0;
     puntuacionOponente = 0;
     lanzamientosRestantes = 3;
@@ -198,6 +201,11 @@ QString Juego::estadoTexto() const
 void Juego::setEstado(int nivel, int puntosJugador, int puntosOponente, int lanzamientos)
 {
     nivelActual = nivel;
+    if (nivelActual == 1) {
+        nivelActivo = &nivel1;
+    } else {
+        nivelActivo = &nivel2;
+    }
     puntuacionJugador = puntosJugador;
     puntuacionOponente = puntosOponente;
     lanzamientosRestantes = lanzamientos;
@@ -215,11 +223,7 @@ void Juego::dibujarTodo()
     chilly.limpiarGrafico();
     smedley.limpiarGrafico();
     pescado.limpiarGrafico();
-    if (nivelActual == 1) {
-        nivel1.dibujar(scene);
-    } else {
-        nivel2.dibujar(scene);
-    }
+    nivelActivo->dibujar(scene);
     if (nivelActual == 2) {
         casa.dibujar(scene);
     }

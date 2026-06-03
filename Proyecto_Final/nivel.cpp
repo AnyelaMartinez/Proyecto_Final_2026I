@@ -8,3 +8,7 @@ Nivel::Nivel()
 Nivel::~Nivel()
 {
 }
+
+void Nivel::procesarBarrido()
+{
+}

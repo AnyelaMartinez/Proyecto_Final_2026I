@@ -14,6 +14,7 @@ public:
     virtual void dibujar(QGraphicsScene *scene) = 0;
     virtual void procesarTecla(int tecla) = 0;
     virtual bool terminado() const = 0;
+    virtual void procesarBarrido();
 
 protected:
     Pista pista;
