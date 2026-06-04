@@ -13,11 +13,11 @@
 
 PescadoDorado::PescadoDorado(int xInicial, int yInicial)
     : ObjetoBase(xInicial, yInicial, "pescado"),
-      duracionBonus(8.0f),
-      recolectado(false),
-      tiempo(0.0f),
-      baseY(yInicial),
-      direccion(1)
+    duracionBonus(8.0f),
+    recolectado(false),
+    tiempo(0.0f),
+    baseY(yInicial),
+    direccion(1)
 {
 }
 
@@ -42,14 +42,23 @@ void PescadoDorado::reiniciar(int nuevaX, int nuevaY)
 
 void PescadoDorado::actualizar(float dt)
 {
-    if (activo && !recolectado) {
-        tiempo += dt;
-        x += direccion;
-        if (x < 310 || x > 470) {
-            direccion *= -1;
-        }
-        y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 10.0f);
+    if (recolectado) {
+        ObjetoBase::actualizar(dt);
+        return;
     }
+    tiempo += dt;
+    // Ciclo: 5 seg visible, 3 seg escondido
+    float cycle = std::fmod(tiempo, 8.0f);
+    bool deberiaActivo = cycle < 5.0f;
+    if (activo != deberiaActivo) {
+        setActivo(deberiaActivo);
+    }
+    // El pez se sigue moviendo aunque este escondido, para no aparecer en el mismo sitio
+    x += direccion;
+    if (x < 310 || x > 470) {
+        direccion *= -1;
+    }
+    y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 10.0f);
     ObjetoBase::actualizar(dt);
 }
 

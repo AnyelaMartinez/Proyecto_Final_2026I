@@ -146,7 +146,7 @@ void NieveEspesa::dibujar(QGraphicsScene *scene) const
 ZonaMagica::ZonaMagica(Vector2D posicion, int ancho, int alto)
     : Zona(posicion, ancho, alto, 0.40f)
 {
-    fisica = std::make_unique<FisicaPerturbacion>(38.0f, 7.0f, 0.0f);
+    fisica = std::make_unique<FisicaPerturbacion>(220.0f, 2.5f, 0.0f);
 }
 
 void ZonaMagica::aplicarEfecto(PiedraCurling &piedra) const

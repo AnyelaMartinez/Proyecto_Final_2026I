@@ -4,6 +4,7 @@
 #include <QFont>
 #include <QGraphicsScene>
 #include <QPen>
+#include <QRandomGenerator>
 #include <Qt>
 #include <QtMath>
 
@@ -32,7 +33,8 @@ Juego::Juego()
     anguloLanzamiento(0.0f),
     flechaLinea(nullptr),
     flechaIzq(nullptr),
-    flechaDer(nullptr)
+    flechaDer(nullptr),
+    nivel2EsperandoComienzo(false)
 {
 }
 
@@ -66,22 +68,32 @@ void Juego::ejecutar(float dt)
         espacioAnterior = espacioActual;
         chilly.dejarDeBarrer();
     } else {
-        // Nivel 2: flechas mueven a Chilly, Espacio barre
-        if (entrada.flechaArriba()) {
-            moverChilly(0, -4);
-        }
-        if (entrada.flechaAbajo()) {
-            moverChilly(0, 4);
-        }
-        if (entrada.flechaIzquierda()) {
-            moverChilly(-4, 0);
-        }
-        if (entrada.flechaDerecha()) {
-            moverChilly(4, 0);
-        }
-        if (entrada.espacio()) {
-            barrer();
+        // Nivel 2
+        actualizarCopos(dt);
+        actualizarMedidor(dt);
+        if (nivel2EsperandoComienzo) {
+            // Esperando que el jugador apriete Espacio para lanzar
+            chilly.setPosicion(120, 400);
+            bool espacioActual = entrada.espacio();
+            if (espacioActual && !espacioAnterior) {
+                piedra.aplicarFuerza(medidorFuerza, 0.0f);
+                esperandoResultado = true;
+                nivel2EsperandoComienzo = false;
+                --lanzamientosRestantes;
+                mensajeEstado = QString("Lanzaste con fuerza %1. Manten Espacio para barrer.").arg(static_cast<int>(medidorFuerza));
+            }
+            espacioAnterior = espacioActual;
+            chilly.dejarDeBarrer();
+        } else if (turnoJugador) {
+            // Chilly sigue a la piedra, Espacio barre
+            chilly.setPosicion(piedra.getX() + 45, 400);
+            if (entrada.espacio()) {
+                barrer();
+            } else {
+                chilly.dejarDeBarrer();
+            }
         } else {
+            // Turno de la IA
             chilly.dejarDeBarrer();
         }
     }
@@ -89,12 +101,17 @@ void Juego::ejecutar(float dt)
     nivelActivo->actualizar(dt);
 
     if (iaAnimando) {
-        procesarTurnoIA(dt);
+        if (nivelActual == 1) {
+            procesarTurnoIA(dt);
+        } else {
+            procesarTurnoIANivel2(dt);
+        }
     }
 
     nivelActivo->getPista().aplicarZona(piedra);
     if (chilly.estaBarriendo()) {
-        piedra.setFriccion(0.18f);
+        float friccion = chilly.tieneBonus() ? 0.08f : 0.18f;
+        piedra.setFriccion(friccion);
         nivelActivo->procesarBarrido();
     }
 
@@ -110,19 +127,43 @@ void Juego::ejecutar(float dt)
 
 void Juego::cambiarNivel()
 {
-    nivelActual = nivelActual == 1 ? 2 : 1;
-    if (nivelActual == 1) {
-        nivelActivo = &nivel1;
-        chilly.setPosicion(50, 280);
-    } else {
-        nivelActivo = &nivel2;
-        chilly.setPosicion(80, 360);
+    if (nivelActual == 2) {
+        mensajeEstado = "Reinicia para volver al Nivel 1.";
+        return;
     }
+    if (esperandoResultado || iaAnimando) {
+        mensajeEstado = "Espera a que termine el turno actual.";
+        return;
+    }
+    if (lanzamientosRestantes > 0) {
+        mensajeEstado = "Termina los lanzamientos del Nivel 1 primero.";
+        return;
+    }
+    if (puntuacionJugador <= puntuacionOponente) {
+        mensajeEstado = "No puedes pasar al Nivel 2 sin ganar el Nivel 1.";
+        return;
+    }
+
+    // Pasar a Nivel 2
+    nivelActual = 2;
+    nivelActivo = &nivel2;
+    chilly.setPosicion(120, 400);
+    smedley.setPosicion(620, 400);
+    smedley.setPatronVertical(false);
+    smedley.setActivo(true);
+    pescado.reiniciar(380, 400);
+    piedraIA.setActivo(false);
+    piedra.reiniciar(80, 400);
+    piedra.setFriccion(0.45f);
+    puntuacionJugador = 0;
+    puntuacionOponente = 0;
+    lanzamientosRestantes = 3;
+    nivel2EsperandoComienzo = true;
+    esperandoResultado = false;
+    turnoJugador = true;
+    iaAnimando = false;
     espacioAnterior = true;
-    piedra.reiniciar();
-    mensajeEstado = nivelActual == 1
-                        ? "Nivel 1: vista superior, prepara fuerza y angulo."
-                        : "Nivel 2: vista lateral, usa barrido con espacio.";
+    mensajeEstado = "Nivel 2: Espacio = lanzar / barrer. Barrer baja la friccion (la piedra se desliza mas).";
     dibujarTodo();
 }
 
@@ -200,12 +241,15 @@ void Juego::reiniciar()
     esperandoResultado = false;
     iaAnimando = false;
     turnoJugador = true;
+    nivel2EsperandoComienzo = false;
     mensajeEstado = "Juego reiniciado.";
     piedra.reiniciar();
     piedraIA.reiniciar(90, 210);
     piedraIA.setActivo(false);
     chilly.setPosicion(50, 280);
     smedley.setPosicion(430, 120);
+    smedley.setPatronVertical(true);
+    smedley.setActivo(true);
     pescado.reiniciar(350, 360);
     dibujarTodo();
 }
@@ -266,6 +310,7 @@ void Juego::dibujarTodo()
     flechaLinea = nullptr;
     flechaIzq = nullptr;
     flechaDer = nullptr;
+    copos.clear();
     nivelActivo->dibujar(scene);
     pescado.dibujar(scene);
     chilly.dibujar(scene);
@@ -276,6 +321,9 @@ void Juego::dibujarTodo()
     if (nivelActual == 1) {
         crearMedidor();
         crearFlechaAngulo();
+    } else {
+        crearCopos();
+        crearMedidor();
     }
 }
 
@@ -303,9 +351,18 @@ void Juego::crearMedidor()
 
 void Juego::actualizarMedidor(float dt)
 {
-    if (!turnoJugador || esperandoResultado || lanzamientosRestantes <= 0) {
-        return;
+    bool deberiaActivo;
+    if (nivelActual == 1) {
+        deberiaActivo = (turnoJugador && !esperandoResultado && lanzamientosRestantes > 0);
+    } else {
+        deberiaActivo = nivel2EsperandoComienzo;
     }
+
+    if (medidorFondo) medidorFondo->setVisible(deberiaActivo);
+    if (medidorRelleno) medidorRelleno->setVisible(deberiaActivo);
+    if (medidorLabel) medidorLabel->setVisible(deberiaActivo);
+
+    if (!deberiaActivo) return;
 
     medidorFuerza += medidorDir * 600.0f * dt;
     if (medidorFuerza >= 800.0f) {
@@ -381,13 +438,108 @@ void Juego::actualizarColisiones()
 
 void Juego::procesarFinDeLanzamiento()
 {
-    if (esperandoResultado && piedra.detenido()) {
+    if (!esperandoResultado || !piedra.detenido()) {
+        return;
+    }
+
+    if (nivelActual == 1) {
         const int puntos = nivel1.getCasa().calcularPuntos(piedra);
         puntuacionJugador += puntos;
         esperandoResultado = false;
         turnoJugador = false;
         mensajeEstado = QString("Lanzamiento terminado. Chilly gano %1 puntos. Ahora lanza la IA.").arg(puntos);
         turnoIA();
+    } else {
+        esperandoResultado = false;
+        turnoJugador = false;
+        int distJugador = qAbs(piedra.getX() - 660);
+        int puntos = 0;
+        if (distJugador < 30) puntos = 10;
+        else if (distJugador < 60) puntos = 6;
+        else if (distJugador < 100) puntos = 3;
+        puntuacionJugador += puntos;
+        mensajeEstado = QString("Tu piedra paro a %1 px de la casa. +%2 puntos. Ahora lanza la IA.").arg(distJugador).arg(puntos);
+        iniciarTurnoIANivel2();
+    }
+}
+
+void Juego::iniciarTurnoIANivel2()
+{
+    piedraIA.reiniciar(80, 400);
+    piedraIA.setFriccion(0.45f);
+    piedraIA.setActivo(true);
+    // Distancia objetivo ~580 px, multiplicador ~0.55 considerando los parches de nieve
+    float fuerza = 320.0f + (QRandomGenerator::global()->generateDouble() * 60.0 - 30.0);
+    piedraIA.aplicarFuerza(fuerza, 0.0f);
+    iaAnimando = true;
+}
+
+void Juego::procesarTurnoIANivel2(float dt)
+{
+    Pista &p = nivelActivo->getPista();
+    p.aplicarZona(piedraIA);
+    piedraIA.actualizar(dt);
+    smedley.interferir(piedraIA);
+
+    bool fueraDePista = (piedraIA.getX() < 10 || piedraIA.getX() > p.getAncho() - 10);
+    if (!fueraDePista && !piedraIA.detenido()) {
+        return;
+    }
+
+    int distIA = fueraDePista ? 999 : qAbs(piedraIA.getX() - 660);
+    int puntosIA = 0;
+    if (distIA < 30) puntosIA = 10;
+    else if (distIA < 60) puntosIA = 6;
+    else if (distIA < 100) puntosIA = 3;
+    puntuacionOponente += puntosIA;
+    agenteIA.registrarResultado(static_cast<float>(distIA), static_cast<float>(piedraIA.getX()), 660.0f);
+    iaAnimando = false;
+    piedraIA.setActivo(false);
+
+    if (lanzamientosRestantes <= 0) {
+        if (puntuacionJugador > puntuacionOponente) {
+            mensajeEstado = QString("Fin Nivel 2 - Ganaste! Tu: %1, IA: %2").arg(puntuacionJugador).arg(puntuacionOponente);
+        } else if (puntuacionJugador < puntuacionOponente) {
+            mensajeEstado = QString("Fin Nivel 2 - Perdiste. Tu: %1, IA: %2").arg(puntuacionJugador).arg(puntuacionOponente);
+        } else {
+            mensajeEstado = QString("Fin Nivel 2 - Empate %1-%2").arg(puntuacionJugador).arg(puntuacionOponente);
+        }
+    } else {
+        piedra.reiniciar(80, 400);
+        nivel2EsperandoComienzo = true;
+        turnoJugador = true;
+        espacioAnterior = true;
+        mensajeEstado = QString("La IA hizo %1 puntos. Te quedan %2 lanzamientos. Presiona Espacio.").arg(puntosIA).arg(lanzamientosRestantes);
+    }
+}
+
+void Juego::crearCopos()
+{
+    if (!scene) return;
+    QRandomGenerator rng(12345u);
+    for (int i = 0; i < 60; i++) {
+        Copo c;
+        c.x = rng.bounded(760);
+        c.y = rng.bounded(510);
+        c.velY = 30.0f + rng.bounded(40);
+        c.radio = 2 + rng.bounded(3);
+        c.item = scene->addEllipse(c.x - c.radio, c.y - c.radio, c.radio * 2, c.radio * 2,
+                                   QPen(Qt::NoPen), QBrush(QColor(255, 255, 255, 200)));
+        c.item->setZValue(2);
+        copos.push_back(c);
+    }
+}
+
+void Juego::actualizarCopos(float dt)
+{
+    for (auto &c : copos) {
+        c.y += c.velY * dt;
+        if (c.y > 510) {
+            c.y = -10;
+        }
+        if (c.item) {
+            c.item->setRect(c.x - c.radio, c.y - c.radio, c.radio * 2, c.radio * 2);
+        }
     }
 }
 
@@ -397,39 +549,63 @@ void Juego::procesarTurnoIA(float dt)
     p.aplicarZona(piedraIA);
     piedraIA.actualizar(dt);
 
-    if (piedraIA.getX() < 10 || piedraIA.getX() > p.getAncho() - 10
-        || piedraIA.getY() < 10 || piedraIA.getY() > p.getAlto() - 10) {
-        piedraIA.reiniciar(90, 210);
-        piedraIA.setActivo(false);
-        iaAnimando = false;
-        turnoJugador = true;
-        piedra.reiniciar();
-        mensajeEstado = "La piedra de la IA salio de la pista. Turno de Chilly.";
+    bool fueraDePista = (piedraIA.getX() < 10 || piedraIA.getX() > p.getAncho() - 10
+                         || piedraIA.getY() < 10 || piedraIA.getY() > p.getAlto() - 10);
+    if (!fueraDePista && !piedraIA.detenido()) {
         return;
     }
 
-    if (piedraIA.detenido()) {
-        Casa &c = nivel1.getCasa();
-        const int puntosIA = c.calcularPuntos(piedraIA);
-        agenteIA.registrarResultado(piedraIA.distanciaA(c));
-        puntuacionOponente += puntosIA;
+    Casa &c = nivel1.getCasa();
+    int puntosIA = 0;
+    if (!fueraDePista) {
+        puntosIA = c.calcularPuntos(piedraIA);
+        agenteIA.registrarResultado(piedraIA.distanciaA(c), piedraIA.getX(), c.centroCasa().x);
         agenteIA.ajustarDificultad(puntosIA == 0);
-        piedraIA.setActivo(false);
-        iaAnimando = false;
-        turnoJugador = true;
-        piedra.reiniciar();
-        mensajeEstado = QString("La IA gano %1 puntos. Turno de Chilly.").arg(puntosIA);
+    } else {
+        agenteIA.registrarResultado(1000.0f, static_cast<float>(piedraIA.getX()), c.centroCasa().x);
+        agenteIA.ajustarDificultad(true);
+    }
+    puntuacionOponente += puntosIA;
+    piedraIA.reiniciar(90, 210);
+    piedraIA.setActivo(false);
+    iaAnimando = false;
+    turnoJugador = true;
+    piedra.reiniciar();
+
+    if (lanzamientosRestantes <= 0) {
+        if (puntuacionJugador > puntuacionOponente) {
+            mensajeEstado = QString("Fin Nivel 1 - Ganaste! Tu: %1, IA: %2. Presiona Cambiar nivel.")
+            .arg(puntuacionJugador).arg(puntuacionOponente);
+        } else if (puntuacionJugador < puntuacionOponente) {
+            mensajeEstado = QString("Fin Nivel 1 - Perdiste. Tu: %1, IA: %2. Reinicia para intentarlo.")
+            .arg(puntuacionJugador).arg(puntuacionOponente);
+        } else {
+            mensajeEstado = QString("Fin Nivel 1 - Empate %1-%2. Reinicia para intentarlo.")
+            .arg(puntuacionJugador).arg(puntuacionOponente);
+        }
+    } else if (fueraDePista) {
+        mensajeEstado = QString("La piedra de la IA salio de la pista. Te quedan %1 lanzamientos.").arg(lanzamientosRestantes);
+    } else {
+        mensajeEstado = QString("La IA gano %1 puntos. Te quedan %2 lanzamientos.").arg(puntosIA).arg(lanzamientosRestantes);
     }
 }
 
 void Juego::mantenerDentroDePista()
 {
     Pista &p = nivelActivo->getPista();
-    if (piedra.getX() < 10 || piedra.getX() > p.getAncho() - 10
-        || piedra.getY() < 10 || piedra.getY() > p.getAlto() - 10) {
+    bool fuera = (piedra.getX() < 10 || piedra.getX() > p.getAncho() - 10
+                  || piedra.getY() < 10 || piedra.getY() > p.getAlto() - 10);
+    if (!fuera) return;
+
+    if (nivelActual == 1) {
+        // En Nivel 1 se reinicia la piedra y se cancela el lanzamiento
         piedra.reiniciar();
         esperandoResultado = false;
         mensajeEstado = "La piedra salio de la pista.";
+    } else {
+        // En Nivel 2 paramos la piedra donde se salio para que procesarFinDeLanzamiento
+        // pueda calcular puntos y pasarle el turno a la IA
+        piedra.setVelocidad(Vector2D(0, 0));
     }
 }
 

@@ -14,16 +14,14 @@ Pista::Pista(int anchoInicial, int altoInicial)
     // Fondo: hielo normal cubriendo toda la pista
     agregarZona(std::make_unique<HieloNormal>(Vector2D(0, 0), ancho, alto));
 
-    // Manchones de hielo resbaladizo
-    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(170, 90), 110, 70));
-    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(380, 330), 100, 60));
-
-    // Manchones de nieve espesa
-    agregarZona(std::make_unique<NieveEspesa>(Vector2D(290, 200), 90, 70));
-    agregarZona(std::make_unique<NieveEspesa>(Vector2D(450, 90), 80, 80));
-
-    // Manchon magico
-    agregarZona(std::make_unique<ZonaMagica>(Vector2D(180, 290), 100, 100));
+    // Zonas distribuidas en distintas alturas, para que cada angulo de tiro
+    // atraviese una combinacion diferente.
+    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(170, 130), 90, 60));
+    agregarZona(std::make_unique<NieveEspesa>(Vector2D(340, 200), 80, 60));
+    agregarZona(std::make_unique<ZonaMagica>(Vector2D(510, 170), 90, 70));
+    agregarZona(std::make_unique<NieveEspesa>(Vector2D(220, 350), 80, 60));
+    agregarZona(std::make_unique<ZonaMagica>(Vector2D(380, 280), 90, 70));
+    agregarZona(std::make_unique<HieloResbaladizo>(Vector2D(500, 380), 90, 60));
 }
 
 Zona *Pista::zonaEn(float px, float py) const

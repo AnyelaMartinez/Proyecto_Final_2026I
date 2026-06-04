@@ -15,10 +15,15 @@ public:
     void actualizarRuta();
     void actualizar(float dt) override;
     void dibujar(QGraphicsScene *scene) override;
+    void setPatronVertical(bool v);
 
 private:
     float velocidadPatrulla;
     int direccion;
+    bool patronVertical;
+    bool enLane;
+    float tiempoEstado;
+    float cooldownColision;
     FisicaColisionElastica colision;
 };
 

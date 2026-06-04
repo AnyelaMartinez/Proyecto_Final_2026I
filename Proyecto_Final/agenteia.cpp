@@ -37,7 +37,8 @@ Decision AgenteIA::razonar(const Percepcion &percepcion)
     const float dy = percepcion.piedraY - percepcion.objetivoY;
     const float anguloBase = qRadiansToDegrees(std::atan2(dy, dx));
     const float distancia = std::sqrt(dx * dx + dy * dy);
-    const float fuerza = distancia * 1.1f + sesgoFuerza;
+    // Multiplicador calibrado para la friccion del hielo normal (~0.48)
+    const float fuerza = distancia * 0.50f + sesgoFuerza;
     return Decision{fuerza, anguloBase + sesgoAngulo};
 }
 
@@ -59,13 +60,13 @@ void AgenteIA::ajustarDificultad(bool fallo)
     }
 }
 
-void AgenteIA::registrarResultado(float distanciaFinal)
+void AgenteIA::registrarResultado(float distanciaFinal, float xFinal, float xObjetivo)
 {
-    historial.push_back(Lanzamiento{ultimaDecision.fuerza, ultimaDecision.angulo, distanciaFinal});
-    calcularCorreccion();
+    historial.push_back(Lanzamiento{ultimaDecision.fuerza, ultimaDecision.angulo, distanciaFinal, xFinal});
+    calcularCorreccion(xObjetivo);
 }
 
-void AgenteIA::calcularCorreccion()
+void AgenteIA::calcularCorreccion(float xObjetivo)
 {
     if (historial.isEmpty()) {
         return;
@@ -73,10 +74,20 @@ void AgenteIA::calcularCorreccion()
 
     const Lanzamiento ultimo = historial.last();
     if (ultimo.distanciaFinal > 80.0f) {
-        sesgoFuerza += 4.0f;
+        // Fallo: ajustar segun si se paso o se quedo corto
+        if (ultimo.xFinal > xObjetivo) {
+            // Se paso: bajar fuerza
+            sesgoFuerza -= 25.0f;
+        } else {
+            // Se quedo corto: subir fuerza
+            sesgoFuerza += 25.0f;
+        }
         sesgoAngulo *= 0.95f;
     } else {
-        sesgoFuerza *= 0.90f;
+        // Quedo cerca: refinar
+        sesgoFuerza *= 0.9f;
         margenError = qMax(3.0f, margenError - 0.5f);
     }
+    // Limites para evitar que el sesgo se dispare
+    sesgoFuerza = qBound(-150.0f, sesgoFuerza, 150.0f);
 }

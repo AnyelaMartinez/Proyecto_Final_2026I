@@ -25,6 +25,7 @@ struct Lanzamiento
     float fuerza;
     float angulo;
     float distanciaFinal;
+    float xFinal;
 };
 
 class AgenteIA
@@ -38,8 +39,8 @@ public:
     Decision razonar(const Percepcion &percepcion);
     void actuar(PiedraCurling &piedra, const Casa &casa);
     void ajustarDificultad(bool fallo);
-    void registrarResultado(float distanciaFinal);
-    void calcularCorreccion();
+    void registrarResultado(float distanciaFinal, float xFinal, float xObjetivo);
+    void calcularCorreccion(float xObjetivo);
 
 private:
     float margenError;

@@ -13,11 +13,14 @@
 #include "pista.h"
 #include "smedley.h"
 
+#include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
 #include <QString>
+
+#include <vector>
 
 class Juego
 {
@@ -57,6 +60,10 @@ private:
     void actualizarMedidor(float dt);
     void crearFlechaAngulo();
     void actualizarFlechaAngulo();
+    void crearCopos();
+    void actualizarCopos(float dt);
+    void iniciarTurnoIANivel2();
+    void procesarTurnoIANivel2(float dt);
 
     QGraphicsScene *scene;
     int nivelActual;
@@ -92,6 +99,19 @@ private:
     QGraphicsLineItem *flechaLinea;
     QGraphicsLineItem *flechaIzq;
     QGraphicsLineItem *flechaDer;
+
+    // Estado del Nivel 2
+    bool nivel2EsperandoComienzo;
+
+    // Copos de nieve cayendo (Nivel 2)
+    struct Copo {
+        QGraphicsEllipseItem *item;
+        float x;
+        float y;
+        float velY;
+        int radio;
+    };
+    std::vector<Copo> copos;
 };
 
 #endif

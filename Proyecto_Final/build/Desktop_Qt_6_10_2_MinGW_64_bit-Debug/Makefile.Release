@@ -374,6 +374,10 @@ release/moc_mainwindow.cpp: ../../mainwindow.h \
 		../../pescadodorado.h \
 		../../piedracurling.h \
 		../../smedley.h \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
@@ -641,6 +645,10 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		../../pescadodorado.h \
 		../../piedracurling.h \
 		../../smedley.h \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
@@ -885,6 +893,10 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		../../pescadodorado.h \
 		../../piedracurling.h \
 		../../smedley.h \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
@@ -2485,8 +2497,11 @@ release/zona.o: ../../zona.cpp ../../zona.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
-		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QtMath
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\zona.o ..\..\zona.cpp
 
 release/pista.o: ../../pista.cpp ../../pista.h \
@@ -2656,7 +2671,9 @@ release/pista.o: ../../pista.cpp ../../pista.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QFont \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QLinearGradient \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\pista.o ..\..\pista.cpp
 
@@ -3133,7 +3150,8 @@ release/nivel2.o: ../../nivel2.cpp ../../nivel2.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpen.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QRectF \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
-		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QFont \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/qgraphicsitem.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qvariant.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qdebug.h \
@@ -3148,7 +3166,12 @@ release/nivel2.o: ../../nivel2.cpp ../../nivel2.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qvarlengtharray.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QLinearGradient \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPolygonF \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/Qt
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\nivel2.o ..\..\nivel2.cpp
 
@@ -3596,6 +3619,10 @@ release/gestorpersistencia.o: ../../gestorpersistencia.cpp ../../gestorpersisten
 		../../pescadodorado.h \
 		../../piedracurling.h \
 		../../smedley.h \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QDataStream \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QFile \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qfile.h \
@@ -3784,7 +3811,17 @@ release/juego.o: ../../juego.cpp ../../juego.h \
 		../../pescadodorado.h \
 		../../piedracurling.h \
 		../../smedley.h \
-		C:/Qt/6.10.2/mingw_64/include/QtCore/Qt
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QFont \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/Qt \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QtMath
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\juego.o ..\..\juego.cpp
 
 release/qrc_recursos.o: release/qrc_recursos.cpp 

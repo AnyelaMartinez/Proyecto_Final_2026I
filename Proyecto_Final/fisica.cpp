@@ -58,7 +58,18 @@ FisicaPerturbacion::FisicaPerturbacion(float amplitud, float frecuencia, float f
 
 void FisicaPerturbacion::aplicar(PiedraCurling &piedra, float dt)
 {
+    // En vez de oscilar y, aplica una fuerza perpendicular a la velocidad
+    // -> la piedra curva su trayectoria (efecto curling).
     tiempo += dt;
-    const float desplazamiento = A * qSin(omega * tiempo + phi) * dt;
-    piedra.aplicarEmpuje(0.0f, desplazamiento);
+    const Vector2D vel = piedra.getVelocidad();
+    const float speed = qSqrt(vel.x * vel.x + vel.y * vel.y);
+    if (speed < 1.0f) {
+        return;
+    }
+    const float perpX = -vel.y / speed;
+    const float perpY = vel.x / speed;
+    // Direccion alterna con el sin para que la curva sea visible pero no caotica
+    const float dir = qSin(omega * tiempo + phi) >= 0.0f ? 1.0f : -1.0f;
+    const float fuerzaCurl = A * dt * dir;
+    piedra.aplicarEmpuje(perpX * fuerzaCurl, perpY * fuerzaCurl);
 }
