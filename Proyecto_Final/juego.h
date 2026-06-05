@@ -25,14 +25,21 @@
 class Juego
 {
 public:
+    enum EstadoJuego {
+        EnCurso,
+        GanoJugador,
+        GanoIA
+    };
+
     Juego();
 
     void iniciar(QGraphicsScene *scene);
     void ejecutar(float dt);
     void cambiarNivel();
+    EstadoJuego getEstadoJuego() const;
     bool verificarVictoria() const;
     bool verificarDerrota() const;
-    bool guardar(const QString &archivo) const;
+    bool guardar(const QString &archivo);
     bool cargar(const QString &archivo);
 
     void lanzarJugador(float fuerza, float angulo);
@@ -46,8 +53,9 @@ public:
     int getPuntuacionJugador() const;
     int getPuntuacionOponente() const;
     int getLanzamientosRestantes() const;
+    float getTiempoRestanteNivel2() const;
     QString estadoTexto() const;
-    void setEstado(int nivel, int puntosJugador, int puntosOponente, int lanzamientos);
+    void setEstado(int nivel, int puntosJugador, int puntosOponente, int lanzamientos, float tiempoRestante);
 
 private:
     void dibujarTodo();
@@ -64,6 +72,9 @@ private:
     void actualizarCopos(float dt);
     void iniciarTurnoIANivel2();
     void procesarTurnoIANivel2(float dt);
+    void mostrarResultadoFinalNivel2();
+    void setupNivel2();
+    void randomizarCasa();
 
     QGraphicsScene *scene;
     int nivelActual;
@@ -102,6 +113,7 @@ private:
 
     // Estado del Nivel 2
     bool nivel2EsperandoComienzo;
+    EstadoJuego estadoJuego;
 
     // Copos de nieve cayendo (Nivel 2)
     struct Copo {

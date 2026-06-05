@@ -17,7 +17,8 @@ PescadoDorado::PescadoDorado(int xInicial, int yInicial)
     recolectado(false),
     tiempo(0.0f),
     baseY(yInicial),
-    direccion(1)
+    direccion(1),
+    frameActual(0)
 {
 }
 
@@ -59,6 +60,15 @@ void PescadoDorado::actualizar(float dt)
         direccion *= -1;
     }
     y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 10.0f);
+
+    // Animacion de aleteo
+    int nuevoFrame = static_cast<int>(tiempo * 4.0f) % 4;
+    if (grafico && nuevoFrame != frameActual) {
+        frameActual = nuevoFrame;
+        QGraphicsPixmapItem *p = static_cast<QGraphicsPixmapItem*>(grafico);
+        p->setPixmap(spriteSheet.copy(frameActual * 96, 0, 96, 96));
+    }
+
     ObjetoBase::actualizar(dt);
 }
 
@@ -68,9 +78,14 @@ void PescadoDorado::dibujar(QGraphicsScene *scene)
         return;
     }
 
-    QGraphicsPixmapItem *pez = scene->addPixmap(QPixmap(":/sprites/pescado.png"));
+    if (spriteSheet.isNull()) {
+        spriteSheet.load(":/sprites/pescado_sheet.png");
+    }
+    QGraphicsPixmapItem *pez = scene->addPixmap(spriteSheet.copy(0, 0, 96, 96));
     pez->setOffset(-48, -48);
+    pez->setScale(0.65);
     grafico = pez;
     grafico->setZValue(5);
     grafico->setPos(x, y);
+    frameActual = 0;
 }

@@ -45,3 +45,8 @@ Vector2D Casa::centroCasa() const
 {
     return centro;
 }
+
+void Casa::setCentro(Vector2D nuevoCentro)
+{
+    centro = nuevoCentro;
+}

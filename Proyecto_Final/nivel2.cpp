@@ -12,7 +12,7 @@
 #include <Qt>
 
 Nivel2::Nivel2()
-    : tiempoLimite(20.0f), tiempoRestante(20.0f), metaX(660)
+    : tiempoLimite(90.0f), tiempoRestante(90.0f), metaX(660)
 {
     // Zonas a la altura del carril lateral (la piedra va por y ~= 400)
     pista.agregarZona(std::make_unique<NieveEspesa>(Vector2D(220, 380), 75, 55));
@@ -109,15 +109,15 @@ void Nivel2::dibujar(QGraphicsScene *scene)
                           QPen(Qt::NoPen), QBrush(QColor(255, 240, 180, 230)));
     }
 
-    // Casa-objetivo sobre el hielo (en lugar de bandera): elipsoides aplastados por perspectiva
-    int cx = metaX, cy = sueloY + 65;
-    scene->addEllipse(cx - 40, cy - 16, 80, 32,
+    // Casa-objetivo sobre el hielo (mas grande para que sea mas facil acertarle)
+    int cx = metaX, cy = sueloY + 70;
+    scene->addEllipse(cx - 70, cy - 26, 140, 52,
+                      QPen(QColor(50, 80, 130), 3), QBrush(QColor(225, 240, 255, 230)));
+    scene->addEllipse(cx - 45, cy - 17, 90, 34,
+                      QPen(QColor(180, 30, 30), 3), QBrush(QColor(255, 235, 235, 220)));
+    scene->addEllipse(cx - 22, cy - 9, 44, 18,
                       QPen(QColor(50, 80, 130), 2), QBrush(QColor(225, 240, 255, 230)));
-    scene->addEllipse(cx - 26, cy - 10, 52, 20,
-                      QPen(QColor(180, 30, 30), 2), QBrush(QColor(255, 235, 235, 220)));
-    scene->addEllipse(cx - 12, cy - 5, 24, 10,
-                      QPen(QColor(50, 80, 130), 1), QBrush(QColor(225, 240, 255, 230)));
-    scene->addEllipse(cx - 5, cy - 2, 10, 5,
+    scene->addEllipse(cx - 8, cy - 3, 16, 8,
                       QPen(Qt::NoPen), QBrush(QColor(220, 30, 30)));
 
     QFont fonte("Arial", 11, QFont::Bold);
@@ -141,10 +141,7 @@ bool Nivel2::terminado() const
 
 void Nivel2::procesarBarrido()
 {
-    tiempoRestante += 0.20f;
-    if (tiempoRestante > tiempoLimite) {
-        tiempoRestante = tiempoLimite;
-    }
+    // El barrido solo cambia la friccion en Juego, ya no extiende el tiempo
 }
 
 bool Nivel2::verificarLlegada(int xPiedra) const
@@ -160,4 +157,11 @@ bool Nivel2::verificarTiempo() const
 float Nivel2::getTiempoRestante() const
 {
     return tiempoRestante;
+}
+
+void Nivel2::setTiempoRestante(float t)
+{
+    if (t < 0.0f) t = 0.0f;
+    if (t > tiempoLimite) t = tiempoLimite;
+    tiempoRestante = t;
 }

@@ -14,151 +14,251 @@
    <string>Mundo de Chilly Willy</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="layoutCentral">
+    <property name="margin"><number>0</number></property>
     <item>
-     <widget class="QGraphicsView" name="graphicsView">
-      <property name="minimumSize">
-       <size>
-        <width>760</width>
-        <height>520</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="panelControles">
-      <item>
-       <widget class="QLabel" name="labelTitulo">
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Mundo de Chilly Willy</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelNivel">
-        <property name="text">
-         <string>Nivel: 1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelPuntuacion">
-        <property name="text">
-         <string>Jugador: 0 | IA: 0</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelLanzamientos">
-        <property name="text">
-         <string>Lanzamientos: 3</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelControles">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Controles:
-- Flechas izq/der: girar angulo
-- Espacio: lanzar (Nivel 1) / barrer (Nivel 2)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="botonCambiarNivel">
-        <property name="text">
-         <string>Cambiar nivel</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="botonReiniciar">
-        <property name="text">
-         <string>Reiniciar</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="layoutGuardar">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex"><number>0</number></property>
+
+      <!-- ==================== PÁGINA 0: MENÚ DE INICIO ==================== -->
+      <widget class="QWidget" name="pageMenu">
+       <property name="styleSheet">
+        <string>
+QWidget#pageMenu {
+  background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+              stop:0 rgb(110, 150, 210), stop:0.5 rgb(180, 215, 240), stop:1 rgb(230, 245, 255));
+}
+QLabel#labelTituloMenu {
+  color: rgb(180, 30, 30);
+  font-size: 42pt;
+  font-weight: bold;
+}
+QLabel#labelSubtituloMenu {
+  color: rgb(40, 60, 100);
+  font-size: 14pt;
+  font-style: italic;
+}
+QPushButton {
+  background-color: rgba(255, 255, 255, 230);
+  border: 3px solid rgb(50, 80, 130);
+  border-radius: 14px;
+  color: rgb(20, 50, 100);
+  font-weight: bold;
+  font-size: 16pt;
+  padding: 14px 40px;
+  min-width: 220px;
+}
+QPushButton:hover {
+  background-color: rgb(220, 240, 255);
+  border-color: rgb(180, 30, 30);
+}
+QPushButton:pressed {
+  background-color: rgb(180, 215, 240);
+}
+        </string>
+       </property>
+       <layout class="QVBoxLayout" name="layoutMenu">
         <item>
-         <widget class="QPushButton" name="botonGuardar">
-          <property name="text">
-           <string>Guardar</string>
-          </property>
+         <spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelTituloMenu">
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="text"><string>❄ Mundo de Chilly Willy ❄</string></property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="botonCargar">
-          <property name="text">
-           <string>Cargar</string>
-          </property>
+         <widget class="QLabel" name="labelSubtituloMenu">
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="text"><string>Curling en el polo norte</string></property>
          </widget>
+        </item>
+        <item>
+         <spacer><property name="orientation"><enum>Qt::Vertical</enum></property>
+          <property name="sizeHint" stdset="0"><size><width>20</width><height>50</height></size></property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout">
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+          <item>
+           <widget class="QPushButton" name="botonJugar">
+            <property name="text"><string>Jugar</string></property>
+           </widget>
+          </item>
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout">
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+          <item>
+           <widget class="QPushButton" name="botonSalir">
+            <property name="text"><string>Salir</string></property>
+           </widget>
+          </item>
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </item>
+        <item>
+         <spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="botonMusica">
-        <property name="text">
-         <string>Musica: ON/OFF</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelEstado">
-        <property name="minimumSize">
-         <size>
-          <width>220</width>
-          <height>80</height>
-         </size>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Listo para jugar</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
+      </widget>
+
+      <!-- ==================== PÁGINA 1: JUEGO ==================== -->
+      <widget class="QWidget" name="pageGame">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QGraphicsView" name="graphicsView">
+          <property name="minimumSize"><size><width>760</width><height>520</height></size></property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="panelControles">
+          <item>
+           <widget class="QLabel" name="labelTitulo">
+            <property name="font"><font><pointsize>14</pointsize><bold>true</bold></font></property>
+            <property name="text"><string>Mundo de Chilly Willy</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelNivel">
+            <property name="text"><string>Nivel: 1</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelPuntuacion">
+            <property name="text"><string>Jugador: 0 | IA: 0</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelLanzamientos">
+            <property name="text"><string>Lanzamientos: 3</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelTiempo">
+            <property name="font"><font><pointsize>11</pointsize><bold>true</bold></font></property>
+            <property name="text"><string>Tiempo: 90s</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelControles">
+            <property name="font"><font><pointsize>10</pointsize></font></property>
+            <property name="wordWrap"><bool>true</bool></property>
+            <property name="text"><string>Controles:
+- Flechas izq/der: girar angulo
+- Espacio: lanzar (Nivel 1) / barrer (Nivel 2)</string></property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layoutGuardar">
+            <item><widget class="QPushButton" name="botonGuardar"><property name="text"><string>Guardar</string></property></widget></item>
+            <item><widget class="QPushButton" name="botonCargar"><property name="text"><string>Cargar</string></property></widget></item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="botonMusica">
+            <property name="text"><string>Musica: ON/OFF</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="botonMenuPrincipal">
+            <property name="text"><string>Menú principal</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelEstado">
+            <property name="minimumSize"><size><width>220</width><height>80</height></size></property>
+            <property name="wordWrap"><bool>true</bool></property>
+            <property name="text"><string>Listo para jugar</string></property>
+           </widget>
+          </item>
+          <item>
+           <spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+
+      <!-- ==================== PÁGINA 2: FIN DEL JUEGO ==================== -->
+      <widget class="QWidget" name="pageFin">
+       <property name="styleSheet">
+        <string>
+QWidget#pageFin {
+  background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+              stop:0 rgb(110, 150, 210), stop:0.5 rgb(180, 215, 240), stop:1 rgb(230, 245, 255));
+}
+QLabel#labelFinTitulo {
+  font-size: 48pt;
+  font-weight: bold;
+}
+QLabel#labelFinPuntaje {
+  color: rgb(40, 60, 100);
+  font-size: 18pt;
+  font-weight: bold;
+}
+QPushButton {
+  background-color: rgba(255, 255, 255, 230);
+  border: 3px solid rgb(50, 80, 130);
+  border-radius: 14px;
+  color: rgb(20, 50, 100);
+  font-weight: bold;
+  font-size: 14pt;
+  padding: 12px 30px;
+  min-width: 200px;
+}
+QPushButton:hover {
+  background-color: rgb(220, 240, 255);
+  border-color: rgb(180, 30, 30);
+}
+        </string>
+       </property>
+       <layout class="QVBoxLayout" name="layoutFin">
+        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer></item>
+        <item>
+         <widget class="QLabel" name="labelFinTitulo">
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="text"><string>¡Ganaste!</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelFinPuntaje">
+          <property name="alignment"><set>Qt::AlignCenter</set></property>
+          <property name="text"><string>Tu: 0 | IA: 0</string></property>
+         </widget>
+        </item>
+        <item>
+         <spacer><property name="orientation"><enum>Qt::Vertical</enum></property>
+          <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout">
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+          <item><widget class="QPushButton" name="botonVolverJugar"><property name="text"><string>Volver a jugar</string></property></widget></item>
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout">
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+          <item><widget class="QPushButton" name="botonVolverMenu"><property name="text"><string>Menú principal</string></property></widget></item>
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </item>
+        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer></item>
+       </layout>
+      </widget>
+
+     </widget>
     </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1000</width>
-     <height>22</height>
-    </rect>
-   </property>
+   <property name="geometry"><rect><x>0</x><y>0</y><width>1000</width><height>22</height></rect></property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

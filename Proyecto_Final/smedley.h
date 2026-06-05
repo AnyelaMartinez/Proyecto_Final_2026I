@@ -4,6 +4,8 @@
 #include "personaje.h"
 #include "fisica.h"
 
+#include <QPixmap>
+
 class PiedraCurling;
 
 class Smedley : public Personaje
@@ -25,6 +27,9 @@ private:
     float tiempoEstado;
     float cooldownColision;
     FisicaColisionElastica colision;
+    QPixmap spriteSheet;
+    int frameActual;
+    float tiempoAnim;
 };
 
 #endif

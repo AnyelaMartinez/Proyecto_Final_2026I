@@ -30,17 +30,20 @@ protected:
 
 private slots:
     void actualizarJuego();
-    void cambiarNivel();
-    void reiniciarJuego();
     void guardarJuego();
     void cargarJuego();
     void alternarMusica();
     void actualizarPanel();
+    void irAJugar();
+    void irAMenuPrincipal();
+    void volverAJugarDesdeFin();
+    void salirDelJuego();
 
 private:
     void configurarEscena();
     void conectarInterfaz();
     void iniciarMusica();
+    void mostrarPantallaFin();
     QString archivoGuardado() const;
 
     Ui::MainWindow *ui;

@@ -12,10 +12,10 @@
 
 PiedraCurling::PiedraCurling(int xInicial, int yInicial)
     : ObjetoBase(xInicial, yInicial, "piedra"),
-      vel(0, 0),
-      friccion(0.48f),
-      enMovimiento(false),
-      masa(18.0f)
+    vel(0, 0),
+    friccion(0.48f),
+    enMovimiento(false),
+    masa(18.0f)
 {
 }
 
@@ -58,6 +58,7 @@ void PiedraCurling::dibujar(QGraphicsScene *scene)
 
     QGraphicsPixmapItem *piedra = scene->addPixmap(QPixmap(":/sprites/piedra.png"));
     piedra->setOffset(-48, -48);
+    piedra->setScale(0.65);
     grafico = piedra;
     grafico->setZValue(5);
     grafico->setPos(x, y);

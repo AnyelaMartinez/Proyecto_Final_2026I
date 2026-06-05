@@ -16,6 +16,7 @@ public:
     int calcularPuntos(const PiedraCurling &piedra) const;
     bool contiene(const PiedraCurling &piedra) const;
     Vector2D centroCasa() const;
+    void setCentro(Vector2D nuevoCentro);
 
 private:
     Vector2D centro;

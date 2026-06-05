@@ -41,29 +41,35 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "MainWindow",
         "actualizarJuego",
         "",
-        "cambiarNivel",
-        "reiniciarJuego",
         "guardarJuego",
         "cargarJuego",
         "alternarMusica",
-        "actualizarPanel"
+        "actualizarPanel",
+        "irAJugar",
+        "irAMenuPrincipal",
+        "volverAJugarDesdeFin",
+        "salirDelJuego"
     };
 
     QtMocHelpers::UintData qt_methods {
         // Slot 'actualizarJuego'
         QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'cambiarNivel'
-        QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'reiniciarJuego'
-        QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'guardarJuego'
-        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'cargarJuego'
-        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'alternarMusica'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'actualizarPanel'
+        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'irAJugar'
+        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'irAMenuPrincipal'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'volverAJugarDesdeFin'
+        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'salirDelJuego'
+        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -88,12 +94,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->actualizarJuego(); break;
-        case 1: _t->cambiarNivel(); break;
-        case 2: _t->reiniciarJuego(); break;
-        case 3: _t->guardarJuego(); break;
-        case 4: _t->cargarJuego(); break;
-        case 5: _t->alternarMusica(); break;
-        case 6: _t->actualizarPanel(); break;
+        case 1: _t->guardarJuego(); break;
+        case 2: _t->cargarJuego(); break;
+        case 3: _t->alternarMusica(); break;
+        case 4: _t->actualizarPanel(); break;
+        case 5: _t->irAJugar(); break;
+        case 6: _t->irAMenuPrincipal(); break;
+        case 7: _t->volverAJugarDesdeFin(); break;
+        case 8: _t->salirDelJuego(); break;
         default: ;
         }
     }
@@ -119,14 +127,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

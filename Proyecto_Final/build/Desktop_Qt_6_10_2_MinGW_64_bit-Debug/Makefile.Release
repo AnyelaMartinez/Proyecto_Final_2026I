@@ -177,10 +177,13 @@ compiler_rcc_clean:
 release/qrc_recursos.cpp: ../../recursos.qrc \
 		C:/Qt/6.10.2/mingw_64/bin/rcc.exe \
 		../../sonidos/musica.wav \
+		../../sprites/pescado_sheet.png \
 		../../sprites/smedley.png \
 		../../sprites/chilly.png \
+		../../sprites/smedley_sheet.png \
 		../../sprites/pescado.png \
-		../../sprites/piedra.png
+		../../sprites/piedra.png \
+		../../sprites/chilly_sheet.png
 	C:\Qt\6.10.2\mingw_64\bin\rcc.exe -name recursos --no-zstd ..\..\recursos.qrc -o release\qrc_recursos.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h
@@ -361,6 +364,7 @@ release/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../gestorentrada.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QSet \
 		../../gestorpersistencia.h \
@@ -632,6 +636,7 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../gestorentrada.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QSet \
 		../../gestorpersistencia.h \
@@ -880,6 +885,7 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../gestorentrada.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QSet \
 		../../gestorpersistencia.h \
@@ -956,6 +962,8 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qtimer.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtGlobal \
 		ui_mainwindow.h \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QApplication \
+		C:/Qt/6.10.2/mingw_64/include/QtWidgets/qapplication.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QCoreApplication \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QDir \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qdir.h \
@@ -1633,6 +1641,7 @@ release/chillywilly.o: ../../chillywilly.cpp ../../chillywilly.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qendian.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpen.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../piedracurling.h \
 		../../vector2d.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
@@ -1641,8 +1650,9 @@ release/chillywilly.o: ../../chillywilly.cpp ../../chillywilly.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsPolygonItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\chillywilly.o ..\..\chillywilly.cpp
 
 release/smedley.o: ../../smedley.cpp ../../smedley.h \
@@ -1808,6 +1818,7 @@ release/smedley.o: ../../smedley.cpp ../../smedley.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpen.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
 		../../fisica.h \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../piedracurling.h \
 		../../vector2d.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
@@ -1815,8 +1826,9 @@ release/smedley.o: ../../smedley.cpp ../../smedley.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsPixmapItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\smedley.o ..\..\smedley.cpp
 
 release/pescadodorado.o: ../../pescadodorado.cpp ../../pescadodorado.h \
@@ -1980,6 +1992,7 @@ release/pescadodorado.o: ../../pescadodorado.cpp ../../pescadodorado.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qendian.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpen.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../chillywilly.h \
 		../../personaje.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
@@ -1987,7 +2000,6 @@ release/pescadodorado.o: ../../pescadodorado.cpp ../../pescadodorado.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsPixmapItem \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPolygonF \
-		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtMath
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\pescadodorado.o ..\..\pescadodorado.cpp
@@ -3607,6 +3619,7 @@ release/gestorpersistencia.o: ../../gestorpersistencia.cpp ../../gestorpersisten
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qvarlengtharray.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../gestorentrada.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QSet \
 		../../nivel1.h \
@@ -3798,6 +3811,7 @@ release/juego.o: ../../juego.cpp ../../juego.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qalloc.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qpainterpath.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QString \
+		C:/Qt/6.10.2/mingw_64/include/QtGui/QPixmap \
 		../../gestorentrada.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QSet \
 		../../gestorpersistencia.h \

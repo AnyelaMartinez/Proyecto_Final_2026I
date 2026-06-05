@@ -3,6 +3,8 @@
 
 #include "personaje.h"
 
+#include <QPixmap>
+
 class PiedraCurling;
 
 class ChillyWilly : public Personaje
@@ -23,6 +25,13 @@ private:
     bool barriendo;
     bool bonusActivo;
     float tiempoBonus;
+    float inestabilidad;
+    QPixmap spriteSheet;
+    int frameActual;
+    float tiempoAnim;
+    int ultimaX;
+    int ultimaY;
+    float tiempoLanzando;
 };
 
 #endif

@@ -19,7 +19,9 @@ Smedley::Smedley(int xInicial, int yInicial)
     enLane(true),
     tiempoEstado(0.0f),
     cooldownColision(0.0f),
-    colision(0.80f)
+    colision(0.80f),
+    frameActual(0),
+    tiempoAnim(0.0f)
 {
 }
 
@@ -74,6 +76,21 @@ void Smedley::actualizar(float dt)
             }
         }
     }
+
+    // Animacion
+    tiempoAnim += dt;
+    int nuevoFrame;
+    if (cooldownColision > 0.5f) {
+        nuevoFrame = 4; // gruñido al chocar
+    } else {
+        nuevoFrame = static_cast<int>(tiempoAnim * 8.0f) % 4; // ciclo de carrera
+    }
+    if (grafico && nuevoFrame != frameActual) {
+        frameActual = nuevoFrame;
+        QGraphicsPixmapItem *p = static_cast<QGraphicsPixmapItem*>(grafico);
+        p->setPixmap(spriteSheet.copy(frameActual * 96, 0, 96, 96));
+    }
+
     ObjetoBase::actualizar(dt);
 }
 
@@ -92,12 +109,17 @@ void Smedley::dibujar(QGraphicsScene *scene)
         return;
     }
 
-    QGraphicsPixmapItem *cuerpo = scene->addPixmap(QPixmap(":/sprites/smedley.png"));
+    if (spriteSheet.isNull()) {
+        spriteSheet.load(":/sprites/smedley_sheet.png");
+    }
+    QGraphicsPixmapItem *cuerpo = scene->addPixmap(spriteSheet.copy(0, 0, 96, 96));
     cuerpo->setOffset(-48, -48);
+    cuerpo->setScale(0.65);
     QGraphicsSimpleTextItem *nombre = scene->addSimpleText("Smedley");
     nombre->setParentItem(cuerpo);
     nombre->setPos(-28, 23);
     grafico = cuerpo;
     grafico->setZValue(6);
     grafico->setPos(x, y);
+    frameActual = 0;
 }

@@ -5,5 +5,8 @@
         <file>sprites/smedley.png</file>
         <file>sprites/pescado.png</file>
         <file>sprites/piedra.png</file>
+        <file>sprites/chilly_sheet.png</file>
+        <file>sprites/smedley_sheet.png</file>
+        <file>sprites/pescado_sheet.png</file>
     </qresource>
 </RCC>

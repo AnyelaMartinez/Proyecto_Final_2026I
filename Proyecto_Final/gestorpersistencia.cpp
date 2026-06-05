@@ -27,7 +27,8 @@ bool GestorPersistencia::guardar(const QString &archivo, const Juego &juego) con
     out << juego.getNivelActual()
         << juego.getPuntuacionJugador()
         << juego.getPuntuacionOponente()
-        << juego.getLanzamientosRestantes();
+        << juego.getLanzamientosRestantes()
+        << juego.getTiempoRestanteNivel2();
     return true;
 }
 
@@ -45,12 +46,13 @@ bool GestorPersistencia::cargar(const QString &archivo, Juego &juego) const
     int jugador = 0;
     int oponente = 0;
     int lanzamientos = 3;
-    in >> nivel >> jugador >> oponente >> lanzamientos;
+    float tiempoRestante = 90.0f;
+    in >> nivel >> jugador >> oponente >> lanzamientos >> tiempoRestante;
 
     if (in.status() != QDataStream::Ok) {
         return false;
     }
 
-    juego.setEstado(nivel, jugador, oponente, lanzamientos);
+    juego.setEstado(nivel, jugador, oponente, lanzamientos, tiempoRestante);
     return true;
 }

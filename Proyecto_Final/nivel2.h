@@ -18,6 +18,7 @@ public:
     bool verificarLlegada(int xPiedra) const;
     bool verificarTiempo() const;
     float getTiempoRestante() const;
+    void setTiempoRestante(float t);
 
 private:
     float tiempoLimite;

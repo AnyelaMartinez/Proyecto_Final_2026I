@@ -3,6 +3,8 @@
 
 #include "objetobase.h"
 
+#include <QPixmap>
+
 class ChillyWilly;
 
 class PescadoDorado : public ObjetoBase
@@ -21,6 +23,8 @@ private:
     float tiempo;
     int baseY;
     int direccion;
+    QPixmap spriteSheet;
+    int frameActual;
 };
 
 #endif
