@@ -18,8 +18,10 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
+#include <QSoundEffect>
 #include <QString>
 
+#include <memory>
 #include <vector>
 
 class Juego
@@ -31,7 +33,15 @@ public:
         GanoIA
     };
 
+    enum Dificultad {
+        Facil,
+        Medio,
+        Dificil
+    };
+
     Juego();
+
+    void setDificultad(Dificultad d);
 
     void iniciar(QGraphicsScene *scene);
     void ejecutar(float dt);
@@ -114,6 +124,11 @@ private:
     // Estado del Nivel 2
     bool nivel2EsperandoComienzo;
     EstadoJuego estadoJuego;
+
+    // Efectos de sonido
+    std::unique_ptr<QSoundEffect> sonidoLanzar;
+    std::unique_ptr<QSoundEffect> sonidoPez;
+    std::unique_ptr<QSoundEffect> sonidoChoque;
 
     // Copos de nieve cayendo (Nivel 2)
     struct Copo {

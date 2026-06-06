@@ -20,6 +20,7 @@ public:
     void dibujar(QGraphicsScene *scene) override;
     bool estaBarriendo() const;
     bool tieneBonus() const;
+    void setInestabilidad(float i);
 
 private:
     bool barriendo;

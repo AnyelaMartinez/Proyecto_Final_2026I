@@ -25,11 +25,11 @@ Smedley::Smedley(int xInicial, int yInicial)
 {
 }
 
-void Smedley::interferir(PiedraCurling &piedra)
+bool Smedley::interferir(PiedraCurling &piedra)
 {
-    if (cooldownColision > 0.0f) return;
-    if (!patronVertical && !enLane) return;
-    if (piedra.detenido()) return;
+    if (cooldownColision > 0.0f) return false;
+    if (!patronVertical && !enLane) return false;
+    if (piedra.detenido()) return false;
     const int dx = piedra.getX() - x;
     const int dy = piedra.getY() - y;
     if (dx * dx + dy * dy < 2600) {
@@ -40,7 +40,9 @@ void Smedley::interferir(PiedraCurling &piedra)
             piedra.aplicarEmpuje(-25.0f, 0.0f);
         }
         cooldownColision = 0.8f;
+        return true;
     }
+    return false;
 }
 
 void Smedley::actualizarRuta()

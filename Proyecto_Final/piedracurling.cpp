@@ -13,6 +13,8 @@
 PiedraCurling::PiedraCurling(int xInicial, int yInicial)
     : ObjetoBase(xInicial, yInicial, "piedra"),
     vel(0, 0),
+    xFrac(0.0f),
+    yFrac(0.0f),
     friccion(0.48f),
     enMovimiento(false),
     masa(18.0f)
@@ -32,8 +34,15 @@ void PiedraCurling::actualizarFisica(float dt)
         return;
     }
 
-    x += static_cast<int>(vel.x * dt);
-    y += static_cast<int>(vel.y * dt);
+    // Acumuladores fraccionarios para no perder el movimiento sub-pixel cada frame
+    xFrac += vel.x * dt;
+    yFrac += vel.y * dt;
+    int dx = static_cast<int>(xFrac);
+    int dy = static_cast<int>(yFrac);
+    x += dx;
+    y += dy;
+    xFrac -= dx;
+    yFrac -= dy;
 
     const float factor = qMax(0.0f, 1.0f - friccion * dt);
     vel = vel.multiplicar(factor);
@@ -58,7 +67,7 @@ void PiedraCurling::dibujar(QGraphicsScene *scene)
 
     QGraphicsPixmapItem *piedra = scene->addPixmap(QPixmap(":/sprites/piedra.png"));
     piedra->setOffset(-48, -48);
-    piedra->setScale(0.65);
+    piedra->setScale(0.45);
     grafico = piedra;
     grafico->setZValue(5);
     grafico->setPos(x, y);
@@ -77,6 +86,8 @@ float PiedraCurling::distanciaA(const Casa &casa) const
 void PiedraCurling::reiniciar(int nuevaX, int nuevaY)
 {
     vel = Vector2D(0, 0);
+    xFrac = 0.0f;
+    yFrac = 0.0f;
     enMovimiento = false;
     setPosicion(nuevaX, nuevaY);
 }

@@ -13,7 +13,7 @@ Juego::Juego()
     nivelActual(1),
     puntuacionJugador(0),
     puntuacionOponente(0),
-    lanzamientosRestantes(3),
+    lanzamientosRestantes(5),
     esperandoResultado(false),
     iaAnimando(false),
     turnoJugador(true),
@@ -44,6 +44,24 @@ Juego::EstadoJuego Juego::getEstadoJuego() const
     return estadoJuego;
 }
 
+void Juego::setDificultad(Dificultad d)
+{
+    switch (d) {
+    case Facil:
+        agenteIA.setMargenError(15.0f); // IA falla mucho
+        chilly.setInestabilidad(0.05f); // jugador apunta casi perfecto
+        break;
+    case Medio:
+        agenteIA.setMargenError(5.0f);
+        chilly.setInestabilidad(0.20f);
+        break;
+    case Dificil:
+        agenteIA.setMargenError(2.0f);  // IA muy precisa
+        chilly.setInestabilidad(0.40f); // jugador tiembla mas
+        break;
+    }
+}
+
 void Juego::setupNivel2()
 {
     nivelActual = 2;
@@ -53,12 +71,13 @@ void Juego::setupNivel2()
     smedley.setPatronVertical(false);
     smedley.setActivo(true);
     pescado.reiniciar(380, 400);
+    pescado.setModoRandom(false, 310, 470, 395, 405);
     piedraIA.setActivo(false);
     piedra.reiniciar(80, 400);
     piedra.setFriccion(0.45f);
     puntuacionJugador = 0;
     puntuacionOponente = 0;
-    lanzamientosRestantes = 3;
+    lanzamientosRestantes = 5;
     nivel2EsperandoComienzo = true;
     esperandoResultado = false;
     turnoJugador = true;
@@ -73,6 +92,18 @@ void Juego::iniciar(QGraphicsScene *nuevaScene)
     if (scene) {
         Pista &p = nivelActivo->getPista();
         scene->setSceneRect(0, 0, p.getAncho(), p.getAlto());
+    }
+    // Cargar efectos de sonido (solo una vez)
+    if (!sonidoLanzar) {
+        sonidoLanzar = std::make_unique<QSoundEffect>();
+        sonidoLanzar->setSource(QUrl("qrc:/sonidos/whoosh.wav"));
+        sonidoLanzar->setVolume(1.0);
+        sonidoPez = std::make_unique<QSoundEffect>();
+        sonidoPez->setSource(QUrl("qrc:/sonidos/sparkle.wav"));
+        sonidoPez->setVolume(1.0);
+        sonidoChoque = std::make_unique<QSoundEffect>();
+        sonidoChoque->setSource(QUrl("qrc:/sonidos/thump.wav"));
+        sonidoChoque->setVolume(1.0);
     }
     randomizarCasa();
     dibujarTodo();
@@ -165,7 +196,7 @@ void Juego::ejecutar(float dt)
     chilly.actualizar(dt);
     smedley.actualizar(dt);
     pescado.actualizar(dt);
-    smedley.interferir(piedra);
+    if (smedley.interferir(piedra) && sonidoChoque) sonidoChoque->play();
     actualizarColisiones();
     mantenerDentroDePista();
     procesarFinDeLanzamiento();
@@ -198,12 +229,13 @@ void Juego::cambiarNivel()
     smedley.setPatronVertical(false);
     smedley.setActivo(true);
     pescado.reiniciar(380, 400);
+    pescado.setModoRandom(false, 310, 470, 395, 405);
     piedraIA.setActivo(false);
     piedra.reiniciar(80, 400);
     piedra.setFriccion(0.45f);
     puntuacionJugador = 0;
     puntuacionOponente = 0;
-    lanzamientosRestantes = 3;
+    lanzamientosRestantes = 5;
     nivel2EsperandoComienzo = true;
     esperandoResultado = false;
     turnoJugador = true;
@@ -252,6 +284,7 @@ void Juego::lanzarJugador(float fuerza, float angulo)
     esperandoResultado = true;
     --lanzamientosRestantes;
     mensajeEstado = "Chilly Willy lanzo la piedra.";
+    if (sonidoLanzar) sonidoLanzar->play();
 }
 
 void Juego::barrer()
@@ -287,7 +320,7 @@ void Juego::reiniciar()
     nivelActivo = &nivel1;
     puntuacionJugador = 0;
     puntuacionOponente = 0;
-    lanzamientosRestantes = 3;
+    lanzamientosRestantes = 5;
     esperandoResultado = false;
     iaAnimando = false;
     turnoJugador = true;
@@ -303,6 +336,7 @@ void Juego::reiniciar()
     smedley.setPatronVertical(true);
     smedley.setActivo(true);
     pescado.reiniciar(350, 360);
+    pescado.setModoRandom(true, 150, 600, 100, 450);
     dibujarTodo();
 }
 
@@ -355,6 +389,7 @@ void Juego::setEstado(int nivel, int puntosJugador, int puntosOponente, int lanz
         smedley.setPatronVertical(true);
         smedley.setActivo(true);
         pescado.reiniciar(350, 360);
+        pescado.setModoRandom(true, 150, 600, 100, 450);
         piedra.reiniciar();
         nivel2EsperandoComienzo = false;
     } else {
@@ -364,6 +399,7 @@ void Juego::setEstado(int nivel, int puntosJugador, int puntosOponente, int lanz
         smedley.setPatronVertical(false);
         smedley.setActivo(true);
         pescado.reiniciar(380, 400);
+        pescado.setModoRandom(false, 310, 470, 395, 405);
         piedra.reiniciar(80, 400);
         piedra.setFriccion(0.45f);
         nivel2.setTiempoRestante(tiempoRestante);
@@ -511,6 +547,7 @@ void Juego::actualizarColisiones()
     if (pescado.estaActivo() && dx * dx + dy * dy < 1600) {
         pescado.otorgarBonus(chilly);
         mensajeEstado = "Chilly recogio el pescado dorado: bonus activo.";
+        if (sonidoPez) sonidoPez->play();
     }
 }
 
@@ -524,13 +561,6 @@ void Juego::procesarFinDeLanzamiento()
         const int puntos = nivel1.getCasa().calcularPuntos(piedra);
         puntuacionJugador += puntos;
         esperandoResultado = false;
-        // Si ya llegaste a 30 puntos, pasas al Nivel 2 sin esperar a la IA
-        if (puntuacionJugador >= 30) {
-            setupNivel2();
-            mensajeEstado = "Llegaste a 30 puntos! Pasaste al Nivel 2. Presiona Espacio.";
-            dibujarTodo();
-            return;
-        }
         turnoJugador = false;
         mensajeEstado = QString("Chilly gano %1 puntos (total: %2). Ahora lanza la IA.").arg(puntos).arg(puntuacionJugador);
         turnoIA();
@@ -564,7 +594,7 @@ void Juego::procesarTurnoIANivel2(float dt)
     Pista &p = nivelActivo->getPista();
     p.aplicarZona(piedraIA);
     piedraIA.actualizar(dt * 0.7f);
-    smedley.interferir(piedraIA);
+    if (smedley.interferir(piedraIA) && sonidoChoque) sonidoChoque->play();
 
     bool fueraDePista = (piedraIA.getX() < 10 || piedraIA.getX() > p.getAncho() - 10);
     if (!fueraDePista && !piedraIA.detenido()) {
@@ -663,19 +693,33 @@ void Juego::procesarTurnoIA(float dt)
     piedra.reiniciar();
     espacioAnterior = true;
 
-    if (puntuacionOponente >= 30) {
-        // La IA llego a 30 primero -> game over
-        estadoJuego = GanoIA;
-        mensajeEstado = QString("La IA llego a 30 puntos primero. Tu: %1, IA: %2")
-                            .arg(puntuacionJugador).arg(puntuacionOponente);
+    if (lanzamientosRestantes <= 0) {
+        // Fin del Nivel 1: gana quien tenga mas puntos
+        if (puntuacionJugador > puntuacionOponente) {
+            setupNivel2();
+            mensajeEstado = QString("Ganaste el Nivel 1 (%1 a %2)! Pasaste al Nivel 2.")
+                                .arg(puntuacionJugador).arg(puntuacionOponente);
+            dibujarTodo();
+        } else {
+            estadoJuego = GanoIA;
+            if (puntuacionJugador < puntuacionOponente) {
+                mensajeEstado = QString("Fin Nivel 1 - Perdiste. Tu: %1, IA: %2")
+                .arg(puntuacionJugador).arg(puntuacionOponente);
+            } else {
+                mensajeEstado = QString("Empate %1-%2. Intentalo de nuevo.")
+                .arg(puntuacionJugador).arg(puntuacionOponente);
+            }
+        }
     } else {
-        // Siguiente turno: nueva posicion de la casa
+        // Siguiente ronda: nueva posicion de la casa
         randomizarCasa();
         dibujarTodo();
         if (fueraDePista) {
-            mensajeEstado = QString("La IA fallo. Tu: %1 / IA: %2. Nueva ronda - la casa se movio.").arg(puntuacionJugador).arg(puntuacionOponente);
+            mensajeEstado = QString("La IA fallo. Tu: %1 / IA: %2. Te quedan %3 tiros.")
+            .arg(puntuacionJugador).arg(puntuacionOponente).arg(lanzamientosRestantes);
         } else {
-            mensajeEstado = QString("La IA gano %1 puntos. Tu: %2 / IA: %3. Casa nueva.").arg(puntosIA).arg(puntuacionJugador).arg(puntuacionOponente);
+            mensajeEstado = QString("La IA gano %1 puntos. Tu: %2 / IA: %3. Te quedan %4 tiros.")
+            .arg(puntosIA).arg(puntuacionJugador).arg(puntuacionOponente).arg(lanzamientosRestantes);
         }
     }
 }

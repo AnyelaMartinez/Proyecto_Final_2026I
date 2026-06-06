@@ -13,7 +13,7 @@ class Smedley : public Personaje
 public:
     Smedley(int xInicial = 420, int yInicial = 120);
 
-    void interferir(PiedraCurling &piedra);
+    bool interferir(PiedraCurling &piedra);
     void actualizarRuta();
     void actualizar(float dt) override;
     void dibujar(QGraphicsScene *scene) override;

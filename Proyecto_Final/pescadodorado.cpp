@@ -9,6 +9,7 @@
 #include <QPolygonF>
 #include <QPixmap>
 #include <QRadialGradient>
+#include <QRandomGenerator>
 #include <QtMath>
 
 PescadoDorado::PescadoDorado(int xInicial, int yInicial)
@@ -18,8 +19,20 @@ PescadoDorado::PescadoDorado(int xInicial, int yInicial)
     tiempo(0.0f),
     baseY(yInicial),
     direccion(1),
+    modoRandom(false),
+    xMinR(310), xMaxR(470),
+    yMinR(360), yMaxR(360),
     frameActual(0)
 {
+}
+
+void PescadoDorado::setModoRandom(bool r, int xMin, int xMax, int yMin, int yMax)
+{
+    modoRandom = r;
+    xMinR = xMin;
+    xMaxR = xMax;
+    yMinR = yMin;
+    yMaxR = yMax;
 }
 
 void PescadoDorado::otorgarBonus(ChillyWilly &c)
@@ -51,15 +64,30 @@ void PescadoDorado::actualizar(float dt)
     // Ciclo: 5 seg visible, 3 seg escondido
     float cycle = std::fmod(tiempo, 8.0f);
     bool deberiaActivo = cycle < 5.0f;
+    bool acabaDeAparecer = deberiaActivo && !activo;
     if (activo != deberiaActivo) {
         setActivo(deberiaActivo);
     }
-    // El pez se sigue moviendo aunque este escondido, para no aparecer en el mismo sitio
-    x += direccion;
-    if (x < 310 || x > 470) {
-        direccion *= -1;
+
+    if (acabaDeAparecer && modoRandom) {
+        // Aparece en un punto aleatorio del tablero
+        QRandomGenerator *rng = QRandomGenerator::global();
+        int rangoX = qMax(1, xMaxR - xMinR);
+        int rangoY = qMax(1, yMaxR - yMinR);
+        x = xMinR + rng->bounded(rangoX);
+        y = yMinR + rng->bounded(rangoY);
+        baseY = y;
+    } else if (activo && !modoRandom) {
+        // Modo patrullaje horizontal (Nivel 2)
+        x += direccion;
+        if (x < 310 || x > 470) {
+            direccion *= -1;
+        }
+        y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 10.0f);
+    } else if (activo && modoRandom) {
+        // Pequeno bobbing en el sitio aleatorio
+        y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 6.0f);
     }
-    y = baseY + static_cast<int>(std::sin(tiempo * 5.0f) * 10.0f);
 
     // Animacion de aleteo
     int nuevoFrame = static_cast<int>(tiempo * 4.0f) % 4;

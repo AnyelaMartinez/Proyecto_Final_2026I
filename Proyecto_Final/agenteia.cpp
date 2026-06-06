@@ -8,7 +8,7 @@
 #include <QtMath>
 
 AgenteIA::AgenteIA()
-    : margenError(14.0f), nivelDificultad(1), sesgoAngulo(0.0f), sesgoFuerza(0.0f), ultimaDecision{0.0f, 0.0f}
+    : margenError(5.0f), nivelDificultad(1), sesgoAngulo(0.0f), sesgoFuerza(0.0f), ultimaDecision{0.0f, 0.0f}
 {
 }
 
@@ -19,7 +19,8 @@ void AgenteIA::percibir(int nivelActual)
 
 void AgenteIA::analizar()
 {
-    margenError = qMax(4.0f, 16.0f - nivelDificultad * 3.0f);
+    // No reseteamos margenError aqui, se ajusta solo en ajustarDificultad
+    margenError = qBound(2.0f, margenError, 12.0f);
 }
 
 Percepcion AgenteIA::percibirEstado(const PiedraCurling &piedra, const Casa &casa)
@@ -51,6 +52,14 @@ void AgenteIA::actuar(PiedraCurling &piedra, const Casa &casa)
     piedra.aplicarFuerza(decision.fuerza, decision.angulo + ruido);
 }
 
+void AgenteIA::setMargenError(float m)
+{
+    margenError = m;
+    sesgoFuerza = 0.0f;
+    sesgoAngulo = 0.0f;
+    historial.clear();
+}
+
 void AgenteIA::ajustarDificultad(bool fallo)
 {
     if (fallo) {
@@ -73,21 +82,16 @@ void AgenteIA::calcularCorreccion(float xObjetivo)
     }
 
     const Lanzamiento ultimo = historial.last();
-    if (ultimo.distanciaFinal > 80.0f) {
-        // Fallo: ajustar segun si se paso o se quedo corto
-        if (ultimo.xFinal > xObjetivo) {
-            // Se paso: bajar fuerza
-            sesgoFuerza -= 25.0f;
-        } else {
-            // Se quedo corto: subir fuerza
-            sesgoFuerza += 25.0f;
-        }
+    // Error proporcional: positivo = se paso a la derecha, negativo = se quedo corto
+    float error = ultimo.xFinal - xObjetivo;
+    if (qAbs(error) > 30.0f) {
+        // Ajuste proporcional al error
+        sesgoFuerza -= error * 0.20f;
         sesgoAngulo *= 0.95f;
     } else {
         // Quedo cerca: refinar
         sesgoFuerza *= 0.9f;
-        margenError = qMax(3.0f, margenError - 0.5f);
+        margenError = qMax(2.0f, margenError - 0.5f);
     }
-    // Limites para evitar que el sesgo se dispare
-    sesgoFuerza = qBound(-150.0f, sesgoFuerza, 150.0f);
+    sesgoFuerza = qBound(-200.0f, sesgoFuerza, 200.0f);
 }

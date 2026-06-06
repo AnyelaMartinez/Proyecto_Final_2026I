@@ -116,3 +116,8 @@ bool ChillyWilly::tieneBonus() const
 {
     return bonusActivo;
 }
+
+void ChillyWilly::setInestabilidad(float i)
+{
+    inestabilidad = i;
+}

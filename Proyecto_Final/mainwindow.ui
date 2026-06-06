@@ -82,6 +82,27 @@ QPushButton:pressed {
          <layout class="QHBoxLayout">
           <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
           <item>
+           <widget class="QLabel" name="labelDificultad">
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+            <property name="styleSheet"><string>color: rgb(40, 60, 100); font-size: 14pt; font-weight: bold; background: transparent; border: none;</string></property>
+            <property name="text"><string>Dificultad:</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboDificultad">
+            <property name="styleSheet"><string>QComboBox { background-color: rgba(255,255,255,230); border: 2px solid rgb(50,80,130); border-radius: 8px; color: rgb(20,50,100); font-weight: bold; font-size: 14pt; padding: 8px 20px; min-width: 150px; }</string></property>
+            <item><property name="text"><string>Facil</string></property></item>
+            <item><property name="text"><string>Medio</string></property></item>
+            <item><property name="text"><string>Dificil</string></property></item>
+           </widget>
+          </item>
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout">
+          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+          <item>
            <widget class="QPushButton" name="botonJugar">
             <property name="text"><string>Jugar</string></property>
            </widget>

@@ -41,6 +41,7 @@ public:
     void ajustarDificultad(bool fallo);
     void registrarResultado(float distanciaFinal, float xFinal, float xObjetivo);
     void calcularCorreccion(float xObjetivo);
+    void setMargenError(float m);
 
 private:
     float margenError;

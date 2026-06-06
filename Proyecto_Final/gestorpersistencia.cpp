@@ -4,6 +4,7 @@
 
 #include <QDataStream>
 #include <QFile>
+#include <stdexcept>
 
 GestorPersistencia::GestorPersistencia()
 {
@@ -19,7 +20,7 @@ bool GestorPersistencia::guardar(const QString &archivo, const Juego &juego) con
 {
     QFile file(archivo);
     if (!file.open(QIODevice::WriteOnly)) {
-        return false;
+        throw std::runtime_error("No se pudo abrir el archivo para guardar la partida");
     }
 
     QDataStream out(&file);
@@ -36,7 +37,7 @@ bool GestorPersistencia::cargar(const QString &archivo, Juego &juego) const
 {
     QFile file(archivo);
     if (!file.open(QIODevice::ReadOnly)) {
-        return false;
+        throw std::runtime_error("No existe una partida guardada para cargar");
     }
 
     QDataStream in(&file);
@@ -45,12 +46,18 @@ bool GestorPersistencia::cargar(const QString &archivo, Juego &juego) const
     int nivel = 1;
     int jugador = 0;
     int oponente = 0;
-    int lanzamientos = 3;
+    int lanzamientos = 5;
     float tiempoRestante = 90.0f;
     in >> nivel >> jugador >> oponente >> lanzamientos >> tiempoRestante;
 
     if (in.status() != QDataStream::Ok) {
-        return false;
+        throw std::runtime_error("El archivo de partida esta corrupto");
+    }
+    if (nivel < 1 || nivel > 2) {
+        throw std::out_of_range("Nivel invalido en el archivo de partida");
+    }
+    if (lanzamientos < 0 || lanzamientos > 20) {
+        throw std::out_of_range("Cantidad de lanzamientos invalida");
     }
 
     juego.setEstado(nivel, jugador, oponente, lanzamientos, tiempoRestante);

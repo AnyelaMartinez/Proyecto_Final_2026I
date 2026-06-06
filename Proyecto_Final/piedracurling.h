@@ -27,6 +27,8 @@ public:
 
 private:
     Vector2D vel;
+    float xFrac;
+    float yFrac;
     float friccion;
     bool enMovimiento;
     float masa;

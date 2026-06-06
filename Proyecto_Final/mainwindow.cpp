@@ -93,11 +93,7 @@ void MainWindow::actualizarPanel()
     ui->labelPuntuacion->setText(QString("Jugador: %1 | IA: %2")
                                      .arg(juego.getPuntuacionJugador())
                                      .arg(juego.getPuntuacionOponente()));
-    if (juego.getNivelActual() == 1) {
-        ui->labelLanzamientos->setText(QString("Meta: 30 puntos"));
-    } else {
-        ui->labelLanzamientos->setText(QString("Lanzamientos: %1").arg(juego.getLanzamientosRestantes()));
-    }
+    ui->labelLanzamientos->setText(QString("Lanzamientos: %1").arg(juego.getLanzamientosRestantes()));
     if (juego.getNivelActual() == 2) {
         int seg = static_cast<int>(juego.getTiempoRestanteNivel2());
         if (seg < 0) seg = 0;

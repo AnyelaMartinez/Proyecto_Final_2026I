@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -39,13 +40,18 @@ public:
     QSpacerItem *spacerItem1;
     QHBoxLayout *hboxLayout;
     QSpacerItem *spacerItem2;
-    QPushButton *botonJugar;
+    QLabel *labelDificultad;
+    QComboBox *comboDificultad;
     QSpacerItem *spacerItem3;
     QHBoxLayout *hboxLayout1;
     QSpacerItem *spacerItem4;
-    QPushButton *botonSalir;
+    QPushButton *botonJugar;
     QSpacerItem *spacerItem5;
+    QHBoxLayout *hboxLayout2;
     QSpacerItem *spacerItem6;
+    QPushButton *botonSalir;
+    QSpacerItem *spacerItem7;
+    QSpacerItem *spacerItem8;
     QWidget *pageGame;
     QHBoxLayout *horizontalLayout;
     QGraphicsView *graphicsView;
@@ -62,22 +68,22 @@ public:
     QPushButton *botonMusica;
     QPushButton *botonMenuPrincipal;
     QLabel *labelEstado;
-    QSpacerItem *spacerItem7;
+    QSpacerItem *spacerItem9;
     QWidget *pageFin;
     QVBoxLayout *layoutFin;
-    QSpacerItem *spacerItem8;
+    QSpacerItem *spacerItem10;
     QLabel *labelFinTitulo;
     QLabel *labelFinPuntaje;
-    QSpacerItem *spacerItem9;
-    QHBoxLayout *hboxLayout2;
-    QSpacerItem *spacerItem10;
-    QPushButton *botonVolverJugar;
     QSpacerItem *spacerItem11;
     QHBoxLayout *hboxLayout3;
     QSpacerItem *spacerItem12;
-    QPushButton *botonVolverMenu;
+    QPushButton *botonVolverJugar;
     QSpacerItem *spacerItem13;
+    QHBoxLayout *hboxLayout4;
     QSpacerItem *spacerItem14;
+    QPushButton *botonVolverMenu;
+    QSpacerItem *spacerItem15;
+    QSpacerItem *spacerItem16;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -123,10 +129,19 @@ public:
 
         hboxLayout->addItem(spacerItem2);
 
-        botonJugar = new QPushButton(pageMenu);
-        botonJugar->setObjectName("botonJugar");
+        labelDificultad = new QLabel(pageMenu);
+        labelDificultad->setObjectName("labelDificultad");
+        labelDificultad->setAlignment(Qt::AlignCenter);
 
-        hboxLayout->addWidget(botonJugar);
+        hboxLayout->addWidget(labelDificultad);
+
+        comboDificultad = new QComboBox(pageMenu);
+        comboDificultad->addItem(QString());
+        comboDificultad->addItem(QString());
+        comboDificultad->addItem(QString());
+        comboDificultad->setObjectName("comboDificultad");
+
+        hboxLayout->addWidget(comboDificultad);
 
         spacerItem3 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
@@ -141,10 +156,10 @@ public:
 
         hboxLayout1->addItem(spacerItem4);
 
-        botonSalir = new QPushButton(pageMenu);
-        botonSalir->setObjectName("botonSalir");
+        botonJugar = new QPushButton(pageMenu);
+        botonJugar->setObjectName("botonJugar");
 
-        hboxLayout1->addWidget(botonSalir);
+        hboxLayout1->addWidget(botonJugar);
 
         spacerItem5 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
@@ -153,9 +168,27 @@ public:
 
         layoutMenu->addLayout(hboxLayout1);
 
-        spacerItem6 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        hboxLayout2 = new QHBoxLayout();
+        hboxLayout2->setObjectName("hboxLayout2");
+        spacerItem6 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        layoutMenu->addItem(spacerItem6);
+        hboxLayout2->addItem(spacerItem6);
+
+        botonSalir = new QPushButton(pageMenu);
+        botonSalir->setObjectName("botonSalir");
+
+        hboxLayout2->addWidget(botonSalir);
+
+        spacerItem7 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        hboxLayout2->addItem(spacerItem7);
+
+
+        layoutMenu->addLayout(hboxLayout2);
+
+        spacerItem8 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+
+        layoutMenu->addItem(spacerItem8);
 
         stackedWidget->addWidget(pageMenu);
         pageGame = new QWidget();
@@ -244,9 +277,9 @@ public:
 
         panelControles->addWidget(labelEstado);
 
-        spacerItem7 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        spacerItem9 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        panelControles->addItem(spacerItem7);
+        panelControles->addItem(spacerItem9);
 
 
         horizontalLayout->addLayout(panelControles);
@@ -256,9 +289,9 @@ public:
         pageFin->setObjectName("pageFin");
         layoutFin = new QVBoxLayout(pageFin);
         layoutFin->setObjectName("layoutFin");
-        spacerItem8 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        spacerItem10 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        layoutFin->addItem(spacerItem8);
+        layoutFin->addItem(spacerItem10);
 
         labelFinTitulo = new QLabel(pageFin);
         labelFinTitulo->setObjectName("labelFinTitulo");
@@ -272,27 +305,9 @@ public:
 
         layoutFin->addWidget(labelFinPuntaje);
 
-        spacerItem9 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        spacerItem11 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        layoutFin->addItem(spacerItem9);
-
-        hboxLayout2 = new QHBoxLayout();
-        hboxLayout2->setObjectName("hboxLayout2");
-        spacerItem10 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        hboxLayout2->addItem(spacerItem10);
-
-        botonVolverJugar = new QPushButton(pageFin);
-        botonVolverJugar->setObjectName("botonVolverJugar");
-
-        hboxLayout2->addWidget(botonVolverJugar);
-
-        spacerItem11 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        hboxLayout2->addItem(spacerItem11);
-
-
-        layoutFin->addLayout(hboxLayout2);
+        layoutFin->addItem(spacerItem11);
 
         hboxLayout3 = new QHBoxLayout();
         hboxLayout3->setObjectName("hboxLayout3");
@@ -300,10 +315,10 @@ public:
 
         hboxLayout3->addItem(spacerItem12);
 
-        botonVolverMenu = new QPushButton(pageFin);
-        botonVolverMenu->setObjectName("botonVolverMenu");
+        botonVolverJugar = new QPushButton(pageFin);
+        botonVolverJugar->setObjectName("botonVolverJugar");
 
-        hboxLayout3->addWidget(botonVolverMenu);
+        hboxLayout3->addWidget(botonVolverJugar);
 
         spacerItem13 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
@@ -312,9 +327,27 @@ public:
 
         layoutFin->addLayout(hboxLayout3);
 
-        spacerItem14 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        hboxLayout4 = new QHBoxLayout();
+        hboxLayout4->setObjectName("hboxLayout4");
+        spacerItem14 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        layoutFin->addItem(spacerItem14);
+        hboxLayout4->addItem(spacerItem14);
+
+        botonVolverMenu = new QPushButton(pageFin);
+        botonVolverMenu->setObjectName("botonVolverMenu");
+
+        hboxLayout4->addWidget(botonVolverMenu);
+
+        spacerItem15 = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        hboxLayout4->addItem(spacerItem15);
+
+
+        layoutFin->addLayout(hboxLayout4);
+
+        spacerItem16 = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+
+        layoutFin->addItem(spacerItem16);
 
         stackedWidget->addWidget(pageFin);
 
@@ -375,6 +408,13 @@ public:
 "        ", nullptr));
         labelTituloMenu->setText(QCoreApplication::translate("MainWindow", "\342\235\204 Mundo de Chilly Willy \342\235\204", nullptr));
         labelSubtituloMenu->setText(QCoreApplication::translate("MainWindow", "Curling en el polo norte", nullptr));
+        labelDificultad->setStyleSheet(QCoreApplication::translate("MainWindow", "color: rgb(40, 60, 100); font-size: 14pt; font-weight: bold; background: transparent; border: none;", nullptr));
+        labelDificultad->setText(QCoreApplication::translate("MainWindow", "Dificultad:", nullptr));
+        comboDificultad->setItemText(0, QCoreApplication::translate("MainWindow", "Facil", nullptr));
+        comboDificultad->setItemText(1, QCoreApplication::translate("MainWindow", "Medio", nullptr));
+        comboDificultad->setItemText(2, QCoreApplication::translate("MainWindow", "Dificil", nullptr));
+
+        comboDificultad->setStyleSheet(QCoreApplication::translate("MainWindow", "QComboBox { background-color: rgba(255,255,255,230); border: 2px solid rgb(50,80,130); border-radius: 8px; color: rgb(20,50,100); font-weight: bold; font-size: 14pt; padding: 8px 20px; min-width: 150px; }", nullptr));
         botonJugar->setText(QCoreApplication::translate("MainWindow", "Jugar", nullptr));
         botonSalir->setText(QCoreApplication::translate("MainWindow", "Salir", nullptr));
         labelTitulo->setText(QCoreApplication::translate("MainWindow", "Mundo de Chilly Willy", nullptr));

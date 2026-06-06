@@ -176,7 +176,10 @@ compiler_rcc_clean:
 	-$(DEL_FILE) release\qrc_recursos.cpp
 release/qrc_recursos.cpp: ../../recursos.qrc \
 		C:/Qt/6.10.2/mingw_64/bin/rcc.exe \
+		../../sonidos/thump.wav \
+		../../sonidos/sparkle.wav \
 		../../sonidos/musica.wav \
+		../../sonidos/whoosh.wav \
 		../../sprites/pescado_sheet.png \
 		../../sprites/smedley.png \
 		../../sprites/chilly.png \
@@ -382,10 +385,16 @@ release/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
-		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qeventpoint.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvector2d.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvectornd.h \
@@ -431,12 +440,6 @@ release/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qcursor.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qbitmap.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/qtabwidget.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QTimer \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qtimer.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtGlobal \
@@ -654,10 +657,16 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
-		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qeventpoint.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvector2d.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvectornd.h \
@@ -703,12 +712,6 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qcursor.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qbitmap.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/qtabwidget.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QTimer \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qtimer.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtGlobal \
@@ -903,10 +906,16 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QKeyEvent \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qevent.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qiodevice.h \
-		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qeventpoint.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvector2d.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qvectornd.h \
@@ -952,12 +961,6 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qcursor.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/qbitmap.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/qtabwidget.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
-		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QTimer \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qtimer.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtGlobal \
@@ -2001,6 +2004,8 @@ release/pescadodorado.o: ../../pescadodorado.cpp ../../pescadodorado.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPolygonF \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QRadialGradient \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qrandom.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QtMath
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\pescadodorado.o ..\..\pescadodorado.cpp
 
@@ -3636,6 +3641,13 @@ release/gestorpersistencia.o: ../../gestorpersistencia.cpp ../../gestorpersisten
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QDataStream \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/QFile \
 		C:/Qt/6.10.2/mingw_64/include/QtCore/qfile.h \
@@ -3829,6 +3841,13 @@ release/juego.o: ../../juego.cpp ../../juego.h \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsLineItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsRectItem \
 		C:/Qt/6.10.2/mingw_64/include/QtWidgets/QGraphicsSimpleTextItem \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/QSoundEffect \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qsoundeffect.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaglobal.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimedia-config.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qtmultimediaexports.h \
+		C:/Qt/6.10.2/mingw_64/include/QtMultimedia/qaudio.h \
+		C:/Qt/6.10.2/mingw_64/include/QtCore/qurl.h \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QBrush \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QFont \
 		C:/Qt/6.10.2/mingw_64/include/QtGui/QPen \

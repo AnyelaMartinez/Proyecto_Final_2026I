@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>sonidos/musica.wav</file>
+        <file>sonidos/whoosh.wav</file>
+        <file>sonidos/sparkle.wav</file>
+        <file>sonidos/thump.wav</file>
         <file>sprites/chilly.png</file>
         <file>sprites/smedley.png</file>
         <file>sprites/pescado.png</file>
